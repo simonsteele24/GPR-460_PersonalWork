@@ -3,6 +3,8 @@
 #define CALCULATORNODE_H
 
 #include "scene/main/node.h"
+#include "scene/2d/canvas_item.h"
+#include "core/os/input.h"
 
 using namespace std;
 
@@ -21,6 +23,7 @@ public:
 
   void path(String a);
   void location(int a, int b);
+  Point2 getMouseLocation();
   void draw();
 
 };
