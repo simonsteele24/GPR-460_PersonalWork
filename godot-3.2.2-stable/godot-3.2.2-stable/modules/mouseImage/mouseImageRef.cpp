@@ -4,27 +4,22 @@ MouseImageRef::MouseImageRef() {}
 
 //Bind all your methods used in this class
 void MouseImageRef::_bind_methods(){
-	ClassDB::bind_method(D_METHOD("add", "a"), &MouseImageRef::add);
-	ClassDB::bind_method(D_METHOD("sub", "a", "b"), &MouseImageRef::sub);
-	ClassDB::bind_method(D_METHOD("mul", "a", "b"), &MouseImageRef::mul);
-	ClassDB::bind_method(D_METHOD("div", "a", "b"), &MouseImageRef::div);
+	ClassDB::bind_method(D_METHOD("path", "a"), &MouseImageRef::path);
+	ClassDB::bind_method(D_METHOD("location", "a", "b"), &MouseImageRef::location);
+	ClassDB::bind_method(D_METHOD("draw"), &MouseImageRef::draw);
 }
 
 
 //Custom Functions
-String MouseImageRef::add(String a) {
-  return a;
+void MouseImageRef::path(String a) {
+  return;
 }
 
-int MouseImageRef::sub(int a, int b) {
-  return a-b;
+void MouseImageRef::location(int a, int b) {
+  return;
 }
 
-int MouseImageRef::mul(int a, int b) {
-  return a*b;
-}
-
-int MouseImageRef::div(int a, int b) {
-  return a/b;
+void MouseImageRef::draw() {
+  return;
 }
 

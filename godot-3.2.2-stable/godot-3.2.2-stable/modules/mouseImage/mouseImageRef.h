@@ -15,10 +15,9 @@ protected:
 public:
   MouseImageRef();
 
-  String add(String a);
-  int sub(int a, int b);
-  int mul(int a, int b);
-  int div(int a, int b);
+ void path(String a);
+  void location(int a, int b);
+  void draw();
 
 };
 

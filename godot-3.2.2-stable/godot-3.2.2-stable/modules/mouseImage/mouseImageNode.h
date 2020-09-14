@@ -12,13 +12,16 @@ class MouseImageNode : public Node {
 protected:
   static void _bind_methods();
 
+  int iconLocationX;
+  int iconLocationY;
+  String imagePath;
+
 public:
   MouseImageNode();
 
-  String add(String a);
-  int sub(int a, int b);
-  int mul(int a, int b);
-  int div(int a, int b);
+  void path(String a);
+  void location(int a, int b);
+  void draw();
 
 };
 

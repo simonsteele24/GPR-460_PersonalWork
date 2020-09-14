@@ -4,27 +4,23 @@ MouseImageNode::MouseImageNode() {}
 
 //Bind all your methods used in this class
 void MouseImageNode::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("add", "a"), &MouseImageNode::add);
-	ClassDB::bind_method(D_METHOD("sub", "a", "b"), &MouseImageNode::sub);
-	ClassDB::bind_method(D_METHOD("mul", "a", "b"), &MouseImageNode::mul);
-	ClassDB::bind_method(D_METHOD("div", "a", "b"), &MouseImageNode::div);
+	ClassDB::bind_method(D_METHOD("path", "a"), &MouseImageNode::path);
+	ClassDB::bind_method(D_METHOD("location", "a", "b"), &MouseImageNode::location);
+	ClassDB::bind_method(D_METHOD("draw"), &MouseImageNode::draw);
 }
 
 
 //Custom Functions
-String MouseImageNode::add(String a) {
-  return a;
+void MouseImageNode::path(String a) {
+	imagePath = a;
 }
 
-int MouseImageNode::sub(int a, int b) {
-  return a-b;
+void MouseImageNode::location(int a, int b) {
+	iconLocationX = a;
+	iconLocationY = b;
 }
 
-int MouseImageNode::mul(int a, int b) {
-  return a*b;
-}
-
-int MouseImageNode::div(int a, int b) {
-  return a/b;
+void MouseImageNode::draw() {
+  return;
 }
 
