@@ -17,6 +17,8 @@ protected:
   int iconLocationX;
   int iconLocationY;
   String imagePath;
+  RID canvas;
+  RID texture;
 
 public:
   MouseImageNode();
