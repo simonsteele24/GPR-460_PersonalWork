@@ -35,13 +35,15 @@ public:
   MouseImageNode();
 
   void path(String a);
-  void location(int a, int b);
+  void location(Point2 newLocation);
   Point2 getMouseLocation();
   void draw();
   void _texture_changed();
   void set_texture(const Ref<Texture> &p_texture);
   Ref<Texture> get_texture() const;
   void _get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_clip) const;
+  void set_offset(const Point2 &p_offset);
+  Point2 get_offset() const;
 
 };
 

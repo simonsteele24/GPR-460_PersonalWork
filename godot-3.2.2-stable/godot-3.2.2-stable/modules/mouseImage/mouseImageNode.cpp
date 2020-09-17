@@ -9,14 +9,14 @@ MouseImageNode::MouseImageNode()
 	frame = 0;
 	vframes = 1;
 	hframes = 1;
+	centered = true;
 }
 
 //Bind all your methods used in this class
 void MouseImageNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("path", "a"), &MouseImageNode::path);
-	ClassDB::bind_method(D_METHOD("location", "a", "b"), &MouseImageNode::location);
+	ClassDB::bind_method(D_METHOD("location", "a"), &MouseImageNode::location);
 	ClassDB::bind_method(D_METHOD("draw"), &MouseImageNode::draw);
-	ClassDB::bind_method(D_METHOD("getmouselocation"), &MouseImageNode::getMouseLocation);
 }
 
 
@@ -25,9 +25,10 @@ void MouseImageNode::path(String a) {
 	imagePath = a;
 }
 
-void MouseImageNode::location(int a, int b) {
-	iconLocationX = a;
-	iconLocationY = b;
+void MouseImageNode::location(Point2 newLocation)
+{
+	iconLocationX = newLocation.x;
+	iconLocationY = newLocation.y;
 }
 
 Point2 MouseImageNode::getMouseLocation()
@@ -39,11 +40,12 @@ void MouseImageNode::draw()
 {
 	Ref<Image> img;
 	img.instance();
-	img->load("icon.png");
+	img->load(imagePath);
 	Ref<ImageTexture> newTex;
 	newTex.instance();
 	newTex->create_from_image(img);
 	set_texture(newTex);
+	set_offset(getMouseLocation());
 }
 
 void MouseImageNode::_notification(int p_what)
@@ -51,7 +53,6 @@ void MouseImageNode::_notification(int p_what)
 	switch (p_what) {
 
 		case NOTIFICATION_DRAW: {
-			print_line("Here");
 			if (texture.is_null())
 				return;
 			RID ci = get_canvas_item();
@@ -63,7 +64,7 @@ void MouseImageNode::_notification(int p_what)
 
 		case NOTIFICATION_PROCESS:
 		{
-			print_line("Here");
+			location(getMouseLocation());
 			update();
 		}
 	}
@@ -112,7 +113,6 @@ void MouseImageNode::set_texture(const Ref<Texture> &p_texture)
 		texture->connect(CoreStringNames::get_singleton()->changed, this, "_texture_changed");
 
 	update();
-	emit_signal("texture_changed");
 	item_rect_changed();
 	_change_notify("texture");
 }
@@ -128,4 +128,16 @@ void MouseImageNode::_texture_changed()
 Ref<Texture> MouseImageNode::get_texture() const {
 
 	return texture;
+}
+
+void MouseImageNode::set_offset(const Point2 &p_offset) {
+
+	offset = p_offset;
+	update();
+	item_rect_changed();
+	_change_notify("offset");
+}
+Point2 MouseImageNode::get_offset() const {
+
+	return offset;
 }
