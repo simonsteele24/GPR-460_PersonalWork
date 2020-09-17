@@ -6,6 +6,9 @@
 MouseImageNode::MouseImageNode()
 {
 	canvas = VisualServer::get_singleton()->canvas_item_create();
+	frame = 0;
+	vframes = 1;
+	hframes = 1;
 }
 
 //Bind all your methods used in this class
@@ -37,10 +40,92 @@ void MouseImageNode::draw()
 	Ref<Image> img;
 	img.instance();
 	img->load("icon.png");
-	RID newTex = VisualServer::get_singleton()->texture_create_from_image(img);
-	VisualServer::get_singleton()->canvas_item_set_visible(canvas, true);
-	//VisualServer::get_singleton()->canvas_item_set_parent(canvas, get_viewport()->get_world_2d()->get_canvas());
-	VisualServer::get_singleton()->canvas_item_add_circle(canvas,Point2(100,100),100.0f,Color(1,0,0));
-	//VisualServer::get_singleton()->canvas_item_add_texture_rect(canvas, Rect2(Point2(200,200), Size2(Vector2(1000,1000))), newTex, false, Color(1,1,1), false, RID());
+	Ref<ImageTexture> newTex;
+	newTex.instance();
+	newTex->create_from_image(img);
+	set_texture(newTex);
 }
 
+void MouseImageNode::_notification(int p_what)
+{
+	switch (p_what) {
+
+		case NOTIFICATION_DRAW: {
+			print_line("Here");
+			if (texture.is_null())
+				return;
+			RID ci = get_canvas_item();
+			Rect2 src_rect, dst_rect;
+			bool filter_clip;
+			_get_rects(src_rect, dst_rect, filter_clip);
+			texture->draw_rect_region(ci, dst_rect, src_rect, Color(1, 1, 1), false, normal_map, filter_clip);
+		} break;
+
+		case NOTIFICATION_PROCESS:
+		{
+			print_line("Here");
+			update();
+		}
+	}
+}
+
+void MouseImageNode::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_clip) const {
+
+	Rect2 base_rect;
+
+	if (region) {
+		r_filter_clip = region_filter_clip;
+		base_rect = region_rect;
+	} else {
+		r_filter_clip = false;
+		base_rect = Rect2(0, 0, texture->get_width(), texture->get_height());
+	}
+
+	Size2 frame_size = base_rect.size / Size2(hframes, vframes);
+	Point2 frame_offset = Point2(frame % hframes, frame / hframes);
+	frame_offset *= frame_size;
+
+	r_src_rect.size = frame_size;
+	r_src_rect.position = base_rect.position + frame_offset;
+
+	Point2 dest_offset = offset;
+	if (centered)
+		dest_offset -= frame_size / 2;
+	if (Engine::get_singleton()->get_use_pixel_snap()) {
+		dest_offset = dest_offset.floor();
+	}
+
+	r_dst_rect = Rect2(dest_offset, frame_size);
+}
+
+void MouseImageNode::set_texture(const Ref<Texture> &p_texture)
+{
+	if (p_texture == texture)
+		return;
+
+	if (texture.is_valid())
+		texture->disconnect(CoreStringNames::get_singleton()->changed, this, "_texture_changed");
+
+	texture = p_texture;
+
+	if (texture.is_valid())
+		texture->connect(CoreStringNames::get_singleton()->changed, this, "_texture_changed");
+
+	update();
+	emit_signal("texture_changed");
+	item_rect_changed();
+	_change_notify("texture");
+}
+
+void MouseImageNode::_texture_changed()
+{
+	if (texture.is_valid())
+	{
+		update();
+	}
+}
+
+Ref<Texture> MouseImageNode::get_texture() const {
+
+	return texture;
+}
