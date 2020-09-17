@@ -2,18 +2,19 @@
 #ifndef CALCULATORNODE_H
 #define CALCULATORNODE_H
 
-#include "scene/main/node.h"
+#include "scene/2d/node_2d.h"
 #include "scene/2d/canvas_item.h"
 #include "core/os/input.h"
 
 using namespace std;
 
-class MouseImageNode : public Node {
-	GDCLASS(MouseImageNode, Node);
+class MouseImageNode : public Node2D {
+	GDCLASS(MouseImageNode, Node2D);
 
 protected:
   static void _bind_methods();
-
+  void _notification(int p_what){};
+  virtual void _validate_property(PropertyInfo &property) const {};
   int iconLocationX;
   int iconLocationY;
   String imagePath;
