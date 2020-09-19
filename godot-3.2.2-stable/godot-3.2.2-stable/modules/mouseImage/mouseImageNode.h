@@ -1,9 +1,8 @@
 //insert the Headername here
-#ifndef CALCULATORNODE_H
-#define CALCULATORNODE_H
+#ifndef MOUSEIMAGENODE_H
+#define MOUSEIMAGENODE_H
 
 #include "scene/2d/node_2d.h"
-#include "scene/2d/canvas_item.h"
 #include "core/os/input.h"
 #include "core/core_string_names.h"
 
@@ -14,7 +13,7 @@ class MouseImageNode : public Node2D {
 
 protected:
   // Update input functions
-  Point2 getMouseLocation();
+  Point2 getMouseLocation() const;
   void updateLocation();
 
   // Private Texture Functions
@@ -45,7 +44,7 @@ public:
   ~MouseImageNode(){};
 
   // Path functions
-  void path(String a);
+  void path(const String &a);
 
   // Texture functions
   void _texture_changed();

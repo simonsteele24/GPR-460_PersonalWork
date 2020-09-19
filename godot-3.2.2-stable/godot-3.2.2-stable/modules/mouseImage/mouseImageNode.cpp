@@ -1,7 +1,6 @@
 #include "mouseImageNode.h"
 #include "scene/resources/texture.h"
 #include "core/bind/core_bind.h"
-#include "scene/main/viewport.h"
 
 // This function is the default constructor for this class
 MouseImageNode::MouseImageNode()
@@ -17,14 +16,14 @@ void MouseImageNode::_bind_methods()
 
 
 // This function sets the image path for the mouse image based on the path string
-void MouseImageNode::path(String a) {
+void MouseImageNode::path(const String &a) {
 	imagePath = a;
 	setupNewTexture();
 }
 
 
 // This function returns the location of the mouse cursor in screen space
-Point2 MouseImageNode::getMouseLocation()
+Point2 MouseImageNode::getMouseLocation() const
 {
 	return OS::get_singleton()->get_mouse_position();
 }
