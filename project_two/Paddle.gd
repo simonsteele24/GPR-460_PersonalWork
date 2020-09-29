@@ -21,4 +21,3 @@ func _process(delta):
 		velocity = velocity.normalized() * speed
 	position += velocity * delta
 	position.y = clamp(position.y, 0, screen_size.y)
-

@@ -15,3 +15,5 @@ newBall = NodePath("../Ball")
 
 [node name="Ball" parent="." instance=ExtResource( 3 )]
 position = Vector2( 518.562, 267.977 )
+Paddle = NodePath("../Player")
+EnemyPaddle = NodePath("../Enemy")

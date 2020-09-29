@@ -6,6 +6,7 @@ extends Area2D
 # var b = "text"
 
 export (NodePath) var newBall = ""
+var speed = 60
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,6 +14,10 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	position.y = get_node(newBall).position.y
-	pass
+func _process(delta):
+	var targetLocation = get_node(newBall).position.y
+	
+	if (targetLocation - position.y > 0):
+		position.y += speed * delta
+	else:
+		position.y -= speed * delta
