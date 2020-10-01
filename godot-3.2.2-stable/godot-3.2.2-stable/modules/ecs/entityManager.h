@@ -12,10 +12,14 @@ protected:
 
   int numOFEntities = -1;
 
+  Vector<Vector2> positions;
+
 public:
   EntityManager();
 
   int generateID();
+  Vector2 GetPosition(int ID);
+  void SetPosition(int ID, Vector2 newPos);
 
 };
 
