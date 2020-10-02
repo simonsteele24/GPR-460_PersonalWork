@@ -15,12 +15,8 @@ protected:
 
 public:
   Entity();
-
-  // Setter Functions
-  void setID(int newID);
-
-  // Getter Functions
-  int getID();
+  void setPosition(Vector2 newPos);
+  Vector2 getPosition();
 };
 
 #endif

@@ -1,20 +1,24 @@
 #include "entity.h"
+#include "entityManager.h"
 
-Entity::Entity(){}
+Entity::Entity()
+{
+	ID = EntityManager::GetInstance()->generateID();
+}
 
 //Bind all your methods used in this class
 void Entity::_bind_methods()
 {
-  ClassDB::bind_method(D_METHOD("setID", "new ID"), &Entity::setID);
-  ClassDB::bind_method(D_METHOD("getID"), &Entity::getID);
+	ClassDB::bind_method(D_METHOD("setPosition", "newPos"), &Entity::setPosition);
+	ClassDB::bind_method(D_METHOD("getPosition"), &Entity::setPosition);
 }
 
-void Entity::setID(int newID)
+void Entity::setPosition(Vector2 newPos)
 {
-	ID = newID;
+	EntityManager::GetInstance()->SetPosition(ID, newPos);
 }
 
-int Entity::getID()
+Vector2 Entity::getPosition()
 {
-	return ID;
+	return EntityManager::GetInstance()->GetPosition(ID);
 }

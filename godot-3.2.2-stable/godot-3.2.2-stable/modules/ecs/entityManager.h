@@ -3,19 +3,30 @@
 #define ENTITYMANAGER_H
 
 #include "scene/main/node.h"
+#include <iostream>
+using namespace std;
 
-class EntityManager : public Node {
-  GDCLASS(EntityManager, Node);
+class EntityManager
+{
+	
 
 protected:
-  static void _bind_methods();
 
   int numOFEntities = -1;
-
   Vector<Vector2> positions;
 
 public:
+	static EntityManager* instance;
   EntityManager();
+
+  static EntityManager* GetInstance()
+  {
+	  if (!instance)
+	  {
+		  instance = new EntityManager;
+	  }
+	  return instance;
+  }
 
   int generateID();
   Vector2 GetPosition(int ID);
