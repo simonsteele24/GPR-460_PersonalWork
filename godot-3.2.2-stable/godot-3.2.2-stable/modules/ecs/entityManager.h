@@ -4,6 +4,8 @@
 
 #include "scene/main/node.h"
 #include <iostream>
+#include <algorithm>
+#include "collisionhull.h"
 using namespace std;
 
 class EntityManager
@@ -14,6 +16,7 @@ protected:
 
   int numOFEntities = -1;
   Vector<Vector2> positions;
+  Vector<CollisionHull> collisions;
 
 public:
 	static EntityManager* instance;
@@ -31,6 +34,8 @@ public:
   int generateID();
   Vector2 GetPosition(int ID);
   void SetPosition(int ID, Vector2 newPos);
+
+  bool RectangleCircleCollision(int circleID, int rectangleID);
 
 };
 
