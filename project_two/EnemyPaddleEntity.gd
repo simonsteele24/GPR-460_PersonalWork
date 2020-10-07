@@ -10,6 +10,7 @@ var speed = 60
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	setShape("Rectangle")
 	setPosition(Vector2(1000,284))
 	setScale(Vector2(0.1,1))
 	path("bestboi.jpg")

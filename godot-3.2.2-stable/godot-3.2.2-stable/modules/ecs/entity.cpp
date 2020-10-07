@@ -16,7 +16,7 @@ void Entity::_bind_methods()
 	ClassDB::bind_method(D_METHOD("checkForOverlap"), &Entity::CheckForOverlap);
 	ClassDB::bind_method(D_METHOD("setScale", "newScale"), &Entity::SetScale);
 	ClassDB::bind_method(D_METHOD("getScale"), &Entity::GetScale);
-	ClassDB::bind_method(D_METHOD("setShape", "newShape"), &Entity::SetScale);
+	ClassDB::bind_method(D_METHOD("setShape", "newShape"), &Entity::SetCollisionShape);
 	ClassDB::bind_method(D_METHOD("path", "newPath"), &Entity::path);
 }
 
@@ -39,6 +39,7 @@ Vector2 Entity::GetScale()
 void Entity::SetScale(Vector2 newScale)
 {
 	EntityManager::GetInstance()->SetScale(ID, newScale);
+	EntityManager::GetInstance()->SetBounds(ID, newScale);
 }
 
 void Entity::path(const String &a) {
@@ -155,5 +156,12 @@ bool Entity::CheckForOverlap()
 
 void Entity::SetCollisionShape(String newShape)
 {
-
+	if (newShape == "Circle")
+	{
+		EntityManager::GetInstance()->SetShape(ID, Circle);
+	}
+	else
+	{
+		EntityManager::GetInstance()->SetShape(ID, Rectangle);
+	}
 }

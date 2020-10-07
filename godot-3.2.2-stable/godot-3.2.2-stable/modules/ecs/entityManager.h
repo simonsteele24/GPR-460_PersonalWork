@@ -39,6 +39,7 @@ public:
   void SetScale(int ID, Vector2 newScale);
   Shapes GetShape(int ID);
   void SetShape(int ID, Shapes newShape);
+  void SetBounds(int ID, Vector2 newBounds);
   bool RectangleCircleCollision(int circleID, int rectangleID);
   bool CheckForOverlap(int cicleID);
 

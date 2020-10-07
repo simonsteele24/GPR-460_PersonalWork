@@ -8,6 +8,7 @@ var screen_size  # Size of the game window.
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
+	setShape("Rectangle")
 	setPosition(Vector2(16,284))
 	setScale(Vector2(0.1,1))
 	path("bestboi.jpg")

@@ -9,6 +9,7 @@ var screen_size
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
+	setShape("Circle")
 	path("Circle.png")
 	setScale(Vector2(0.02,0.02))
 	setPosition(Vector2(518,267))
@@ -17,6 +18,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	print (getScale())
 	setPosition(getPosition() + (velocity * delta))
 	if (getPosition().x < 0 or getPosition().x > screen_size.x):
 		setPosition(Vector2(screen_size.x / 2, screen_size.y / 2))
@@ -24,18 +26,8 @@ func _process(delta):
 	if (getPosition().y < 0 or getPosition().y > screen_size.y):
 		velocity.y = -velocity.y 
 	
-	if checkForOverlap():
-		var location = position.y - get_node(Paddle).getPosition().y
-		
-		if (abs(location) > 100):
-			if (location > 0):
-				velocity.y = 20
-				pass
-			else:
-				velocity.y = -20
-				pass
-		else:
-			velocity.y = 0
+	#if checkForOverlap():
+	#	velocity.y = -20
 	
 	update()
 	pass

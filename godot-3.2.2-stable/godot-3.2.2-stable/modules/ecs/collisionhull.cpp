@@ -1,6 +1,9 @@
 #include "collisionhull.h"
 
-CollisionHull::CollisionHull(){}
+CollisionHull::CollisionHull()
+{
+	shapeType = Circle;
+}
 
 void CollisionHull::SetHullType(Shapes newShape)
 {
@@ -22,6 +25,10 @@ void CollisionHull::ChangeRadius(int newRadius)
 
 int CollisionHull::GetRadius()
 {
+	if (shapeType != Circle)
+	{
+		return 0;
+	}
 	return radius;
 }
 
