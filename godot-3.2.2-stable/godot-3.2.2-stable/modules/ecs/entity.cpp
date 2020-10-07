@@ -12,7 +12,12 @@ Entity::Entity()
 void Entity::_bind_methods()
 {
 	ClassDB::bind_method(D_METHOD("setPosition", "newPos"), &Entity::setPosition);
-	ClassDB::bind_method(D_METHOD("getPosition"), &Entity::setPosition);
+	ClassDB::bind_method(D_METHOD("getPosition"), &Entity::getPosition);
+	ClassDB::bind_method(D_METHOD("checkForOverlap"), &Entity::CheckForOverlap);
+	ClassDB::bind_method(D_METHOD("setScale", "newScale"), &Entity::SetScale);
+	ClassDB::bind_method(D_METHOD("getScale"), &Entity::GetScale);
+	ClassDB::bind_method(D_METHOD("setShape", "newShape"), &Entity::SetScale);
+	ClassDB::bind_method(D_METHOD("path", "newPath"), &Entity::path);
 }
 
 void Entity::setPosition(Vector2 newPos)
@@ -24,6 +29,16 @@ void Entity::setPosition(Vector2 newPos)
 Vector2 Entity::getPosition()
 {
 	return EntityManager::GetInstance()->GetPosition(ID);
+}
+
+Vector2 Entity::GetScale()
+{
+	return EntityManager::GetInstance()->GetScale(ID);
+}
+
+void Entity::SetScale(Vector2 newScale)
+{
+	EntityManager::GetInstance()->SetScale(ID, newScale);
 }
 
 void Entity::path(const String &a) {
@@ -81,13 +96,13 @@ void Entity::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_cli
 	r_src_rect.position = base_rect.position + frame_offset;
 
 	Point2 dest_offset = offset;
-	dest_offset -= frame_size / 2;
+	dest_offset -= (frame_size * EntityManager::GetInstance()->GetScale(ID)) / 2;
 
 	if (Engine::get_singleton()->get_use_pixel_snap()) {
 		dest_offset = dest_offset.floor();
 	}
 
-	r_dst_rect = Rect2(dest_offset, frame_size);
+	r_dst_rect = Rect2(dest_offset, frame_size * EntityManager::GetInstance()->GetScale(ID));
 }
 
 void Entity::set_texture(const Ref<Texture> &p_texture) {
@@ -131,4 +146,14 @@ void Entity::set_offset(const Point2 &p_offset) {
 Point2 Entity::get_offset() const {
 
 	return offset;
+}
+
+bool Entity::CheckForOverlap()
+{
+	return EntityManager::GetInstance()->CheckForOverlap(ID);
+}
+
+void Entity::SetCollisionShape(String newShape)
+{
+
 }

@@ -36,6 +36,11 @@ public:
   Entity();
   void setPosition(Vector2 newPos);
   Vector2 getPosition();
+  bool CheckForOverlap();
+
+  Vector2 GetScale();
+  void SetScale(Vector2 newScale);
+  void SetCollisionShape(String newShape);
 
   // Path functions
   void path(const String &a);

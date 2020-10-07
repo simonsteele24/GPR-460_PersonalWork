@@ -31,17 +31,5 @@ func _process(delta):
 func _on_Ball_area_entered(area):
 	velocity = -velocity
 	if (area.overlaps_area(get_node(Paddle))):
-		var location = position.y - get_node(Paddle).position.y
-		
-		if (abs(location) > 100):
-			if (location > 0):
-				velocity.y = 20
-				pass
-			else:
-				velocity.y = -20
-				pass
-		else:
-			velocity.y = 0
-	if (area.overlaps_area(get_node(EnemyPaddle))):
-		pass
+		velocity.y = -20
 	pass # Replace with function body.

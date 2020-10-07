@@ -16,6 +16,7 @@ protected:
 
   int numOFEntities = -1;
   Vector<Vector2> positions;
+  Vector<Vector2> scales;
   Vector<CollisionHull> collisions;
 
 public:
@@ -33,9 +34,13 @@ public:
 
   int generateID();
   Vector2 GetPosition(int ID);
+  Vector2 GetScale(int ID);
   void SetPosition(int ID, Vector2 newPos);
-
+  void SetScale(int ID, Vector2 newScale);
+  Shapes GetShape(int ID);
+  void SetShape(int ID, Shapes newShape);
   bool RectangleCircleCollision(int circleID, int rectangleID);
+  bool CheckForOverlap(int cicleID);
 
 };
 
