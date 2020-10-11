@@ -14,27 +14,6 @@ enum Shapes
 	Rectangle
 };
 
-struct RealCollisionHull
-{
-	RealCollisionHull() {}
-	float halfLengthX;
-	float halfLengthY;
-	float radius;
-
-	Shapes shapeType;
-
-	Vector2 GetMinCorner(Vector2 position)
-	{
-		return Vector2(position.x - halfLengthX, position.y - halfLengthY);
-	}
-
-	Vector2 GetMaxCorner(Vector2 position)
-	{
-		return Vector2(position.x + halfLengthX, position.y + halfLengthY);
-	}
-
-};
-
 class CollisionHull {
 
 protected:

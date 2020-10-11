@@ -10,6 +10,7 @@ int EntityManager::generateID() {
 	numOFEntities++;
 	positions.push_back(Vector2(0, 0));
 	collisions.push_back(CollisionHull());
+	textures.push_back(TextureComponent());
 	scales.push_back(Vector2(1, 1));
 	return numOFEntities;
 }
@@ -76,4 +77,32 @@ void EntityManager::SetBounds(int ID, Vector2 newBounds)
 	{
 		collisions[ID].ChangeHalfLengths(newBounds.x * 100, newBounds.y * 100);
 	}
+}
+
+
+
+void EntityManager::SetPath(String newPath, int ID)
+{
+	textures[ID].path(newPath);
+}
+
+
+
+void EntityManager::DrawTexture(RID canvas, int ID)
+{
+	textures[ID].draw(canvas, ID);
+}
+
+
+
+void EntityManager::SetOffset(Point2 newOffset, int ID)
+{
+	textures[ID].set_offset(newOffset);
+}
+
+
+
+Point2 EntityManager::GetOffset(int ID)
+{
+	return textures[ID].get_offset();
 }

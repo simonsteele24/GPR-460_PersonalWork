@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include "collisionhull.h"
+#include "textureComponent.h"
 using namespace std;
 
 class EntityManager
@@ -18,6 +19,7 @@ protected:
   Vector<Vector2> positions;
   Vector<Vector2> scales;
   vector<CollisionHull> collisions;
+  vector<TextureComponent> textures;
 
 public:
 	static EntityManager* instance;
@@ -42,6 +44,10 @@ public:
   void SetBounds(int ID, Vector2 newBounds);
   bool RectangleCircleCollision(int circleID, int rectangleID);
   bool CheckForOverlap(int cicleID);
+  void SetPath(String newPath, int ID);
+  void DrawTexture(RID canvas, int ID);
+  void SetOffset(Point2 newOffset, int ID);
+  Point2 GetOffset(int ID);
 
 };
 

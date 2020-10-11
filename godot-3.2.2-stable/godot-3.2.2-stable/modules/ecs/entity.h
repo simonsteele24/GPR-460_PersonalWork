@@ -30,8 +30,6 @@ protected:
   // Point2's
   Point2 offset;
 
-  void setupNewTexture();
-
 public:
   Entity();
   void setPosition(Vector2 newPos);
@@ -44,18 +42,6 @@ public:
 
   // Path functions
   void path(const String &a);
-
-  // Texture functions
-  void _texture_changed();
-  void set_texture(const Ref<Texture> &p_texture);
-  Ref<Texture> get_texture() const;
-
-  // Rect functions
-  void _get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_clip) const;
-
-  // Offset functions
-  void set_offset(const Point2 &p_offset);
-  Point2 get_offset() const;
 };
 
 #endif
