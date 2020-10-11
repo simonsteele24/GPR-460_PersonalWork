@@ -27,7 +27,7 @@ void EntityManager::SetScale(int ID, Vector2 newScale) {
 }
 
 Vector2 EntityManager::GetScale(int ID) {
-	return Vector2(collisions.get(ID).GetRadius(), collisions.get(ID).GetRadius());
+	return scales.get(ID);
 }
 
 bool EntityManager::RectangleCircleCollision(int circleID, int rectangleID) {
