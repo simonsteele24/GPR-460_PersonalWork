@@ -3,6 +3,7 @@
 #define COLLISIONHULL_H
 
 #include <iostream>
+#include <vector>
 #include "scene/2d/node_2d.h"
 
 using namespace std;
@@ -13,13 +14,33 @@ enum Shapes
 	Rectangle
 };
 
+struct RealCollisionHull
+{
+	RealCollisionHull() {}
+	float halfLengthX;
+	float halfLengthY;
+	float radius;
+
+	Shapes shapeType;
+
+	Vector2 GetMinCorner(Vector2 position)
+	{
+		return Vector2(position.x - halfLengthX, position.y - halfLengthY);
+	}
+
+	Vector2 GetMaxCorner(Vector2 position)
+	{
+		return Vector2(position.x + halfLengthX, position.y + halfLengthY);
+	}
+
+};
 
 class CollisionHull {
 
 protected:
-	int halfLengthX;
-	int halfLengthY;
-	int radius;
+	float halfLengthX;
+	float halfLengthY;
+	float radius;
 
 	Shapes shapeType;
 
@@ -28,8 +49,8 @@ public:
 
   void SetHullType(Shapes newShape);
   Shapes GetHullType();
-  void ChangeRadius(int newRadius);
-  void ChangeHalfLengths(int newHalfLengthX,int newHalfLengthY);
+  void ChangeRadius(float newRadius);
+  void ChangeHalfLengths(float newHalfLengthX,float newHalfLengthY);
   Vector2 GetHalfLength();
   int GetRadius();
   Vector2 GetMinCorner(Vector2 position);

@@ -18,7 +18,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	print (getScale())
+	setScale(Vector2(0.02,0.02))
 	setPosition(getPosition() + (velocity * delta))
 	if (getPosition().x < 0 or getPosition().x > screen_size.x):
 		setPosition(Vector2(screen_size.x / 2, screen_size.y / 2))
@@ -26,8 +26,8 @@ func _process(delta):
 	if (getPosition().y < 0 or getPosition().y > screen_size.y):
 		velocity.y = -velocity.y 
 	
-	#if checkForOverlap():
-	#	velocity.y = -20
+	if checkForOverlap():
+		velocity.x *= -1
 	
 	update()
 	pass

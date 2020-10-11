@@ -15,7 +15,7 @@ Shapes CollisionHull::GetHullType()
 	return shapeType;
 }
 
-void CollisionHull::ChangeRadius(int newRadius)
+void CollisionHull::ChangeRadius(float newRadius)
 {
 	if (shapeType == Circle)
 	{
@@ -32,7 +32,7 @@ int CollisionHull::GetRadius()
 	return radius;
 }
 
-void CollisionHull::ChangeHalfLengths(int newHalfLengthX, int newHalfLengthY)
+void CollisionHull::ChangeHalfLengths(float newHalfLengthX, float newHalfLengthY)
 {
 	if (shapeType == Rectangle)
 	{

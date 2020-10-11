@@ -22,7 +22,8 @@ void EntityManager::SetPosition(int ID, Vector2 newPos) {
 	positions.set(ID, newPos);
 }
 
-void EntityManager::SetScale(int ID, Vector2 newScale) {
+void EntityManager::SetScale(int ID, Vector2 newScale)
+{
 	scales.set(ID, newScale);
 }
 
@@ -31,11 +32,11 @@ Vector2 EntityManager::GetScale(int ID) {
 }
 
 bool EntityManager::RectangleCircleCollision(int circleID, int rectangleID) {
-	Vector2 closestPointToCircle = Vector2(max(collisions.get(rectangleID).GetMinCorner(GetPosition(rectangleID)).x, min(GetPosition(circleID).x, collisions.get(rectangleID).GetMaxCorner(GetPosition(rectangleID)).x)), max(collisions.get(rectangleID).GetMinCorner(GetPosition(rectangleID)).y, min(GetPosition(circleID).y, collisions.get(rectangleID).GetMaxCorner(GetPosition(rectangleID)).y)));
+	Vector2 closestPointToCircle = Vector2(max(collisions[rectangleID].GetMinCorner(GetPosition(rectangleID)).x, min(GetPosition(circleID).x, collisions[rectangleID].GetMaxCorner(GetPosition(rectangleID)).x)), max(collisions[rectangleID].GetMinCorner(GetPosition(rectangleID)).y, min(GetPosition(circleID).y, collisions[rectangleID].GetMaxCorner(GetPosition(rectangleID)).y)));
 
 	Vector2 distance = GetPosition(circleID) - closestPointToCircle;
 
-	bool axisCheck = distance.dot(distance) <= collisions.get(circleID).GetRadius() * collisions.get(circleID).GetRadius();
+	bool axisCheck = distance.dot(distance) <= collisions[circleID].GetRadius() * collisions[circleID].GetRadius();
 
 	return axisCheck;
 }
@@ -44,7 +45,7 @@ bool EntityManager::CheckForOverlap(int circleID) {
 	bool isOverlapped = false;
 	int size = collisions.size();
 	for (int i = 0; i < size; i++) {
-		if (collisions.get(i).GetHullType() != Circle && i != circleID && isOverlapped == false) {
+		if (collisions[i].GetHullType() != Circle && i != circleID && isOverlapped == false) {
 			isOverlapped = RectangleCircleCollision(circleID, i);
 		}
 	}
@@ -54,25 +55,25 @@ bool EntityManager::CheckForOverlap(int circleID) {
 
 Shapes EntityManager::GetShape(int ID)
 {
-	return collisions.get(ID).GetHullType();
+	return collisions[ID].GetHullType();
 }
 
 
 void EntityManager::SetShape(int ID, Shapes newShape)
 {
-	collisions.get(ID).SetHullType(newShape);
+	collisions[ID].SetHullType(newShape);
 }
 
 
 
 void EntityManager::SetBounds(int ID, Vector2 newBounds)
 {
-	if (collisions.get(ID).GetHullType() == Circle)
+	if (collisions[ID].GetHullType() == Circle)
 	{
-		collisions.get(ID).ChangeRadius(newBounds.x * 10);
+		collisions[ID].ChangeRadius(newBounds.x * 100);
 	}
 	else
 	{
-		collisions.get(ID).ChangeHalfLengths(newBounds.x * 10, newBounds.y * 10);
+		collisions[ID].ChangeHalfLengths(newBounds.x * 100, newBounds.y * 100);
 	}
 }

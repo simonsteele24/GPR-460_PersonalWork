@@ -17,7 +17,7 @@ protected:
   int numOFEntities = -1;
   Vector<Vector2> positions;
   Vector<Vector2> scales;
-  Vector<CollisionHull> collisions;
+  vector<CollisionHull> collisions;
 
 public:
 	static EntityManager* instance;
