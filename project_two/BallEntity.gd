@@ -18,11 +18,16 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	setScale(Vector2(0.02,0.02))
+	
+	# Move based on velocity
 	setPosition(getPosition() + (velocity * delta))
+	
+	#Move ball to center of screen if out
 	if (getPosition().x < 0 or getPosition().x > screen_size.x):
 		setPosition(Vector2(screen_size.x / 2, screen_size.y / 2))
 		velocity.x = 300
+	
+	# Bounce ball if on horizontal edges
 	if (getPosition().y < 0 or getPosition().y > screen_size.y):
 		velocity.y = -velocity.y 
 	

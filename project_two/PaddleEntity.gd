@@ -25,6 +25,8 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 	setPosition(getPosition() + (velocity * delta))
+	
+	# clamp movement to screen size
 	setPosition(Vector2(getPosition().x,clamp(getPosition().y, 0, screen_size.y)))
 	update()
 	pass

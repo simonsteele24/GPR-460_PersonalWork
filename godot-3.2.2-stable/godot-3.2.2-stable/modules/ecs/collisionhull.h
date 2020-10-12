@@ -17,23 +17,28 @@ enum Shapes
 class CollisionHull {
 
 protected:
+	// Floats
 	float halfLengthX;
 	float halfLengthY;
 	float radius;
 
+	// Shape types
 	Shapes shapeType;
 
 public:
   CollisionHull();
 
-  void SetHullType(Shapes newShape);
-  Shapes GetHullType();
-  void ChangeRadius(float newRadius);
-  void ChangeHalfLengths(float newHalfLengthX,float newHalfLengthY);
-  Vector2 GetHalfLength();
-  int GetRadius();
-  Vector2 GetMinCorner(Vector2 position);
-  Vector2 GetMaxCorner(Vector2 position);
+  // Setters
+  void setHullType(const Shapes &newShape);
+  void changeRadius(const float &newRadius);
+  void changeHalfLengths(const float &newHalfLengthX, const float &newHalfLengthY);
+
+  // Getters
+  Shapes getHullType() const;
+  Vector2 getHalfLength();
+  int getRadius() const;
+  Vector2 getMinCorner(const Vector2 &position);
+  Vector2 getMaxCorner(const Vector2 &position);
 };
 
 #endif

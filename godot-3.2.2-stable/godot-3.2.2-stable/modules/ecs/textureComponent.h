@@ -24,6 +24,7 @@ protected:
 	// Point2's
 	Point2 offset;
 
+	// Mutators
 	void setupNewTexture();
 
 public:
@@ -43,6 +44,7 @@ public:
 	void set_offset(const Point2 &p_offset);
 	Point2 get_offset() const;
 
+	// Draw functions
 	void draw(const RID &canvas, const int &ID);
 };
 

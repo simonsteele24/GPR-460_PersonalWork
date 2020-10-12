@@ -1,21 +1,31 @@
 #include "collisionhull.h"
 
+// This is the default constructor of the class
 CollisionHull::CollisionHull()
 {
 	shapeType = Circle;
 }
 
-void CollisionHull::SetHullType(Shapes newShape)
+
+
+// This function sets the shape type of the collision component based on a given shape
+void CollisionHull::setHullType(const Shapes &newShape)
 {
 	shapeType = newShape;
 }
 
-Shapes CollisionHull::GetHullType()
+
+
+// This function gets the shape type of the collision component
+Shapes CollisionHull::getHullType() const
 {
 	return shapeType;
 }
 
-void CollisionHull::ChangeRadius(float newRadius)
+
+
+// This function sets the radius of the collision component based on a given radius
+void CollisionHull::changeRadius(const float &newRadius)
 {
 	if (shapeType == Circle)
 	{
@@ -23,7 +33,10 @@ void CollisionHull::ChangeRadius(float newRadius)
 	}
 }
 
-int CollisionHull::GetRadius()
+
+
+// This function gets the radius of the collision component
+int CollisionHull::getRadius() const
 {
 	if (shapeType != Circle)
 	{
@@ -32,7 +45,10 @@ int CollisionHull::GetRadius()
 	return radius;
 }
 
-void CollisionHull::ChangeHalfLengths(float newHalfLengthX, float newHalfLengthY)
+
+
+// This function sets the half lengths of the collision component based on given half lengths
+void CollisionHull::changeHalfLengths(const float &newHalfLengthX, const float &newHalfLengthY)
 {
 	if (shapeType == Rectangle)
 	{
@@ -41,17 +57,26 @@ void CollisionHull::ChangeHalfLengths(float newHalfLengthX, float newHalfLengthY
 	}
 }
 
-Vector2 CollisionHull::GetHalfLength()
+
+
+// This function gets the half lengths of the collision component
+Vector2 CollisionHull::getHalfLength()
 {
 	return Vector2(halfLengthX, halfLengthY);
 }
 
-Vector2 CollisionHull::GetMaxCorner(Vector2 position)
+
+
+// This function gets the max corner of the collision component based on a given position
+Vector2 CollisionHull::getMaxCorner(const Vector2 &position)
 {
 	return Vector2(position.x + halfLengthX, position.y + halfLengthY);
 }
 
-Vector2 CollisionHull::GetMinCorner(Vector2 position)
+
+
+// This function gets the min corner of the collision component based on a given position
+Vector2 CollisionHull::getMinCorner(const Vector2 &position)
 {
 	return Vector2(position.x - halfLengthX, position.y - halfLengthY);
 }

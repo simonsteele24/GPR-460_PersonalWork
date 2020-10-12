@@ -19,6 +19,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	# interpolate to ball's y position
 	var targetLocation = get_node(newBall).getPosition().y
 	
 	if (targetLocation - getPosition().y > 0):

@@ -15,15 +15,19 @@ class EntityManager
 
 protected:
 
+  // Integers
   int numOFEntities = -1;
-  Vector<Vector2> positions;
-  Vector<Vector2> scales;
+
+  // vectors
+  vector<Vector2> positions;
+  vector<Vector2> scales;
   vector<CollisionHull> collisions;
   vector<TextureComponent> textures;
 
 public:
 	static EntityManager* instance;
-  EntityManager();
+
+	EntityManager();
 
   static EntityManager* GetInstance()
   {
@@ -34,20 +38,25 @@ public:
 	  return instance;
   }
 
+  // Getters
   int generateID();
-  Vector2 GetPosition(int ID);
-  Vector2 GetScale(int ID);
-  void SetPosition(int ID, Vector2 newPos);
-  void SetScale(int ID, Vector2 newScale);
-  Shapes GetShape(int ID);
-  void SetShape(int ID, Shapes newShape);
-  void SetBounds(int ID, Vector2 newBounds);
-  bool RectangleCircleCollision(int circleID, int rectangleID);
-  bool CheckForOverlap(int cicleID);
-  void SetPath(String newPath, int ID);
-  void DrawTexture(RID canvas, int ID);
-  void SetOffset(Point2 newOffset, int ID);
-  Point2 GetOffset(int ID);
+  Vector2 getPosition(const int &ID);
+  Vector2 getScale(const int &ID);
+  Shapes getShape(const int &ID);
+  Point2 getOffset(const int &ID) const;
+
+  // Setters
+  void setPosition(const int &ID, const Vector2 &newPos);
+  void setScale(const int &ID, const Vector2 &newScale);
+  void setShape(const int &ID, const Shapes &newShape);
+  void setBounds(const int &ID, const Vector2 &newBounds);
+  void setPath(const String &newPath, const int &ID);
+  void setOffset(const Point2 &newOffset, const int &ID);
+
+  // Update/draw functions
+  bool rectangleCircleCollision(const int &circleID, const int &rectangleID);
+  bool checkForOverlap(const int &cicleID);
+  void drawTexture(const RID &canvas, const int &ID);
 
 };
 
