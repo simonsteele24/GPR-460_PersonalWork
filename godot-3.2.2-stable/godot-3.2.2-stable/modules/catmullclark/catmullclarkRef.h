@@ -1,17 +1,17 @@
 //insert the Headername here
-#ifndef CALCULATORNODE_H
-#define CALCULATORNODE_H
+#ifndef CATMULLCLARKREF_H
+#define CATMULLCLARKREF_H
 
-#include "scene/main/node.h"
+#include "core/reference.h"
 
-class CalculatorNode : public Node {
-	GDCLASS(CalculatorNode, Node);
+class CatmullClarkRef : public Reference {
+  GDCLASS(CatmullClarkRef, Reference);
 
 protected:
   static void _bind_methods();
 
 public:
-  CalculatorNode();
+  CatmullClarkRef();
 
   int add(int a, int b);
   int sub(int a, int b);

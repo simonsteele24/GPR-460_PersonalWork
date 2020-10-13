@@ -1,5 +1,5 @@
-void register_calculator_types();
-void unregister_calculator_types();
+void register_catmullclark_types();
+void unregister_catmullclark_types();
 
 /*
 	void register_MODULNAME_types();
