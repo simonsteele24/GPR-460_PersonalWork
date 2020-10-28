@@ -6,6 +6,7 @@
 #include <iterator>
 #include <string>
 #include <vector>
+#include "trimesh.h"
 
 using namespace std;
 
@@ -14,7 +15,37 @@ struct Face {
 };
 
 void ReadInFile() {
-	ifstream myfile("C:\\Users\\simon\\Desktop\\untitled.obj");
+	vector<triangle_t> triangles;
+
+	// ... fill triangles ...
+	triangles.resize(2);
+	triangles[0].v[0] = 0;
+	triangles[0].v[1] = 1;
+	triangles[0].v[2] = 2;
+	triangles[1].v[0] = 2;
+	triangles[1].v[1] = 1;
+	triangles[1].v[2] = 3;
+	const int kNumVertices = 4;
+
+	vector<edge_t> edges;
+	unordered_edges_from_triangles(triangles.size(), &triangles[0], edges);
+
+	trimesh_t mesh;
+	mesh.build(kNumVertices, triangles.size(), &triangles[0], edges.size(), &edges[0]);
+
+	// Use 'mesh' to walk the connectivity.
+	vector<index_t> neighs;
+	for (int vi = 0; vi < kNumVertices; ++vi) {
+		mesh.vertex_vertex_neighbors(vi, neighs);
+
+		cout << "neighbors of vertex " << vi << ": ";
+		for (int i = 0; i < neighs.size(); ++i) {
+			cout << ' ' << neighs.at(i);
+		}
+		cout << '\n';
+	}
+
+	/*ifstream myfile("C:\\Users\\simon\\Desktop\\untitled.obj");
 
 	string input;
 
@@ -59,6 +90,7 @@ void ReadInFile() {
 	cout << newFaces.size() << endl;
 
 	myfile.close();
+	*/
 }
 
 CatmullClarkNode::CatmullClarkNode() {
