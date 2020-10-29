@@ -37,7 +37,7 @@ void trimesh_t::build(const unsigned long num_vertices, const unsigned long num_
     assert( triangles );
     assert( edges );
 
-	clear();
+	m_face_positions.clear();
 
     directed_edge2index_map_t de2fi;
     for( int fi = 0; fi < num_triangles; ++fi )
@@ -48,7 +48,9 @@ void trimesh_t::build(const unsigned long num_vertices, const unsigned long num_
         de2fi[ std::make_pair( tri.v[2], tri.v[0] ) ] = fi;
 		m_face_positions.push_back(getAverage({tri.positions[0],tri.positions[1],tri.positions[2]}));
     }
-    
+
+	clear();
+
     m_vertex_halfedges.resize( num_vertices, -1 );
     m_face_halfedges.resize( num_triangles, -1 );
     m_edge_halfedges.resize( num_edges, -1 );

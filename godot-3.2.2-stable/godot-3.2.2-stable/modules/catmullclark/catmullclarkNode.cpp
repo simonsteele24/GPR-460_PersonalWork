@@ -20,7 +20,7 @@ trimesh_t ReadInFile() {
 
 	verteces.resize(4);
 	verteces[0] = vertex(0, 0);
-	verteces[1] = vertex(0, 100);
+	verteces[1] = vertex(0, 250);
 	verteces[2] = vertex(100, 100);
 	verteces[3] = vertex(100, 0);
 

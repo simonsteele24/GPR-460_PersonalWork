@@ -55,7 +55,6 @@ public:
         m_face_halfedges.clear();
         m_edge_halfedges.clear();
         m_directed_edge2he_index.clear();
-		m_face_positions.clear();
     }
     
     const halfedge_t& halfedge( const index_t i ) const { return m_halfedges.at( i ); }
