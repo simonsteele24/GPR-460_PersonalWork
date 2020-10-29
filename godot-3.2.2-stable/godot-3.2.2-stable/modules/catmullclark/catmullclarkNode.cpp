@@ -18,33 +18,30 @@ trimesh_t ReadInFile() {
 	vector<triangle_t> triangles;
 	vector<vertex> verteces;
 
-	verteces.resize(4);
+	verteces.resize(3);
 	verteces[0] = vertex(0, 0);
 	verteces[1] = vertex(0, 250);
 	verteces[2] = vertex(100, 100);
-	verteces[3] = vertex(100, 0);
 
 	// ... fill triangles ...
-	triangles.resize(2);
+	triangles.resize(1);
 	triangles[0].v[0] = 0;
 	triangles[0].positions[0] = vertex(verteces[0].x,verteces[0].y);
 	triangles[0].v[1] = 1;
 	triangles[0].positions[1] = vertex(verteces[1].x,verteces[1].y);
 	triangles[0].v[2] = 2;
 	triangles[0].positions[2] = vertex(verteces[2].x,verteces[2].y);
-	triangles[1].v[0] = 2;
-	triangles[1].positions[0] = vertex(verteces[2].x,verteces[2].y);
-	triangles[1].v[1] = 1;
-	triangles[1].positions[1] = vertex(verteces[1].x,verteces[1].y);
-	triangles[1].v[2] = 3;
-	triangles[1].positions[3] = vertex(verteces[3].x,verteces[3].y);
-	const int kNumVertices = 4;
+	const int kNumVertices = 3;
 
 	vector<edge_t> edges;
 	unordered_edges_from_triangles(triangles.size(), &triangles[0], edges);
 
 	trimesh_t mesh;
 	mesh.build(kNumVertices, triangles.size(), &triangles[0], edges.size(), &edges[0], &verteces);
+
+	vector<vertex> points;
+	points = mesh.generateEdgePoints();
+
 
 	// Use 'mesh' to walk the connectivity.
 	vector<index_t> neighs;
@@ -57,6 +54,8 @@ trimesh_t ReadInFile() {
 		}
 		cout << '\n';
 	}
+	cout << "Num Of Verteces: " << verteces.size() << endl;
+	cout << "Num Of Edge Points: " << points.size() << endl;
 	return mesh;
 }
 

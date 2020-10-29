@@ -283,3 +283,13 @@ vertex getAverage(std::vector<vertex> verteces)
 
 	return vertex(totalX / numOfEntries, totalY / numOfEntries);
 }
+
+std::vector<vertex> trimesh_t::generateEdgePoints()
+{
+	vector<vertex> edgePoints;
+	for (int i = 0; i < m_halfedges.size(); i++)
+	{
+		edgePoints.push_back(getAverage({m_vertex_positions[m_halfedges[i].to_vertex], m_vertex_positions[m_halfedges[m_halfedges[i].next_he].to_vertex]}));
+	}
+	return edgePoints;
+}

@@ -45,6 +45,8 @@ public:
     //       completes and may be destroyed.
     void build( const unsigned long num_vertices, const unsigned long num_triangles, const triangle_t* triangles, const unsigned long num_edges, const edge_t* edges, const std::vector<vertex>* _verteces);
 
+	std::vector<vertex> generateEdgePoints();
+
 	std::vector<vertex> getAllVertexPositions();
 
     void clear()
