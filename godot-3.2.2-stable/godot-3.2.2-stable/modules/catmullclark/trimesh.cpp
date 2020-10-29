@@ -293,3 +293,33 @@ std::vector<vertex> trimesh_t::generateEdgePoints()
 	}
 	return edgePoints;
 }
+
+std::vector<vertex> trimesh_t::generateNewVertexPoints()
+{
+	std::vector<vertex> newPoints;
+	for (int i = 0; i < m_vertex_positions.size(); i++)
+	{
+		int valance = vertex_valence(i);
+		std::vector<index_t> positions = vertex_vertex_neighbors(i);
+		std::vector<vertex> midpoints;
+		for (int j = 0; j < positions.size(); j++)
+		{
+			midpoints.push_back(to_edgepoint(i,positions[j]));
+		}
+		vertex midpointAverage = getAverage(midpoints);
+		positions.clear();
+		std::vector<vertex> facePoints;
+		positions = vertex_face_neighbors(i);
+		for (int j = 0; j < positions.size(); j++) 
+		{
+			facePoints.push_back(m_face_positions[j]);
+		}
+		vertex facePointAverage = getAverage(facePoints);
+
+		float finalX = (facePointAverage.x / valance) + ((2 * midpointAverage.x)/valance) + (m_vertex_positions[i].x/valance);
+		float finalY =(facePointAverage.y / valance) + ((2 * midpointAverage.y)/valance) + (m_vertex_positions[i].y/valance);
+		
+		newPoints.push_back(vertex(finalX,finalY));
+	}
+	return newPoints;
+}

@@ -46,7 +46,7 @@ public:
     void build( const unsigned long num_vertices, const unsigned long num_triangles, const triangle_t* triangles, const unsigned long num_edges, const edge_t* edges, const std::vector<vertex>* _verteces);
 
 	std::vector<vertex> generateEdgePoints();
-
+	std::vector<vertex> generateNewVertexPoints();
 	std::vector<vertex> getAllVertexPositions();
 
     void clear()
@@ -131,7 +131,12 @@ public:
         vertex_vertex_neighbors( vertex_index, neighbors );
         return neighbors.size();
     }
-    
+
+	vertex to_edgepoint(const int vertexOne, const int vertexTwo)
+	{
+		return getAverage({ m_vertex_positions[vertexOne], m_vertex_positions[vertexTwo] });
+	}
+
     void vertex_face_neighbors( const index_t vertex_index, std::vector< index_t >& result ) const
     {
         /*

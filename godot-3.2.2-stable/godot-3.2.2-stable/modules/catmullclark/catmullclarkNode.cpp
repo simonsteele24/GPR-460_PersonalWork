@@ -74,7 +74,7 @@ void CatmullClarkNode::_ready() {
 
 	trimesh_t newMesh = ReadInFile();
 
-	vector<vertex> newPositions = newMesh.getAllVertexPositions();
+	vector<vertex> newPositions = newMesh.generateNewVertexPoints();
 
 	for (int i = 0; i < newPositions.size(); i++)
 	{
