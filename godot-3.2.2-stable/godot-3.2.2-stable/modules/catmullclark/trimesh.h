@@ -5,6 +5,24 @@
 #include <vector>
 #include <map>
 
+struct vertex
+{
+	float x;
+	float y;
+
+	vertex()
+	{
+		x = 0;
+		y = 0;
+	}
+
+	vertex(int _x, int _y)
+	{
+		x = _x;
+		y = _y;
+	}
+};
+
 // trimesh_t::build() needs the unordered edges of the mesh.  If you don't have them, call this first.
 void unordered_edges_from_triangles( const unsigned long num_triangles, const triangle_t* triangles, std::vector< edge_t >& edges_out );
 
