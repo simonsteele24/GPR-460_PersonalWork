@@ -2,29 +2,12 @@
 #define __trimesh_h__
 
 #include "trimesh_types.h" // triangle_t, edge_t
-#include <vector>
 #include <map>
-
-struct vertex
-{
-	float x;
-	float y;
-
-	vertex()
-	{
-		x = 0;
-		y = 0;
-	}
-
-	vertex(int _x, int _y)
-	{
-		x = _x;
-		y = _y;
-	}
-};
 
 // trimesh_t::build() needs the unordered edges of the mesh.  If you don't have them, call this first.
 void unordered_edges_from_triangles( const unsigned long num_triangles, const triangle_t* triangles, std::vector< edge_t >& edges_out );
+
+vertex getAverage(std::vector<vertex> verteces);
 
 class trimesh_t
 {
@@ -72,6 +55,7 @@ public:
         m_face_halfedges.clear();
         m_edge_halfedges.clear();
         m_directed_edge2he_index.clear();
+		m_face_positions.clear();
     }
     
     const halfedge_t& halfedge( const index_t i ) const { return m_halfedges.at( i ); }
@@ -200,6 +184,7 @@ private:
     std::vector< index_t > m_edge_halfedges;
 	// Positions of verteces
 	std::vector<vertex> m_vertex_positions;
+	std::vector<vertex> m_face_positions;
     // A map from an ordered edge (an std::pair of index_t's) to an offset into the 'halfedge' sequence.
     typedef std::map< std::pair< index_t, index_t >, index_t > directed_edge2index_map_t;
     directed_edge2index_map_t m_directed_edge2he_index;

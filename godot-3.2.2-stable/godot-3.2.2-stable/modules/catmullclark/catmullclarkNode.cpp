@@ -27,11 +27,17 @@ trimesh_t ReadInFile() {
 	// ... fill triangles ...
 	triangles.resize(2);
 	triangles[0].v[0] = 0;
+	triangles[0].positions[0] = vertex(verteces[0].x,verteces[0].y);
 	triangles[0].v[1] = 1;
+	triangles[0].positions[1] = vertex(verteces[1].x,verteces[1].y);
 	triangles[0].v[2] = 2;
+	triangles[0].positions[2] = vertex(verteces[2].x,verteces[2].y);
 	triangles[1].v[0] = 2;
+	triangles[1].positions[0] = vertex(verteces[2].x,verteces[2].y);
 	triangles[1].v[1] = 1;
+	triangles[1].positions[1] = vertex(verteces[1].x,verteces[1].y);
 	triangles[1].v[2] = 3;
+	triangles[1].positions[3] = vertex(verteces[3].x,verteces[3].y);
 	const int kNumVertices = 4;
 
 	vector<edge_t> edges;

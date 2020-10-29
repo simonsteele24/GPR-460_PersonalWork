@@ -1,8 +1,38 @@
 #ifndef __trimesh_types_h__
 #define __trimesh_types_h__
 
+#include <vector>
+#include <iostream>
+using namespace std;
+
     typedef long index_t;
-    
+
+	struct vertex
+	{
+		float x;
+		float y;
+
+		vertex()
+		{
+			x = 0;
+			y = 0;
+		}
+
+		vertex(int _x, int _y)
+		{
+			x = _x;
+			y = _y;
+		}
+
+
+		inline vertex operator=(vertex a)
+		{
+			x = a.x;
+			y = a.y;
+			return a;
+		}
+	};
+
     struct edge_t
     {
         index_t v[2];
@@ -22,6 +52,7 @@
     struct triangle_t
     {
         index_t v[3];
+		vector<vertex> positions;
         
         index_t& i() { return v[0]; }
         const index_t& i() const { return v[0]; }
@@ -35,6 +66,9 @@
         triangle_t()
         {
             v[0] = v[1] = v[2] = -1;
+			positions.push_back(vertex());
+			positions.push_back(vertex());
+			positions.push_back(vertex());
         }
     };
 
