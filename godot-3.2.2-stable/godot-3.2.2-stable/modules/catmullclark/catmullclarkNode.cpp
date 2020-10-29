@@ -14,8 +14,15 @@ struct Face {
 	vector<int> nurbs;
 };
 
-void ReadInFile() {
+trimesh_t ReadInFile() {
 	vector<triangle_t> triangles;
+	vector<vertex> verteces;
+
+	verteces.resize(4);
+	verteces[0] = vertex(0, 0);
+	verteces[1] = vertex(0, 100);
+	verteces[2] = vertex(100, 100);
+	verteces[3] = vertex(100, 0);
 
 	// ... fill triangles ...
 	triangles.resize(2);
@@ -31,7 +38,7 @@ void ReadInFile() {
 	unordered_edges_from_triangles(triangles.size(), &triangles[0], edges);
 
 	trimesh_t mesh;
-	mesh.build(kNumVertices, triangles.size(), &triangles[0], edges.size(), &edges[0]);
+	mesh.build(kNumVertices, triangles.size(), &triangles[0], edges.size(), &edges[0], &verteces);
 
 	// Use 'mesh' to walk the connectivity.
 	vector<index_t> neighs;
@@ -44,53 +51,7 @@ void ReadInFile() {
 		}
 		cout << '\n';
 	}
-
-	/*ifstream myfile("C:\\Users\\simon\\Desktop\\untitled.obj");
-
-	string input;
-
-	vector<Vector2> verteces;
-	vector<Face> newFaces;
-
-	bool makingFace = false;
-	Face tempFace;
-
-	while (!myfile.eof()) {
-		myfile >> input;
-
-		if (input == "f")
-		{
-			if (makingFace == true)
-			{
-				newFaces.push_back(tempFace);
-			}
-
-			tempFace.nurbs.clear();
-			makingFace = true;
-		}
-
-		if (makingFace)
-		{
-			tempFace.nurbs.push_back(1);
-		}
-
-		if (input == "v") {
-			myfile >> input;
-			float x = stof(input);
-			myfile >> input;
-			float y = stof(input);
-			myfile >> input;
-			float z = stof(input);
-			verteces.push_back(Vector2(x, y));
-		}
-	}
-
-	newFaces.push_back(tempFace);
-
-	cout << newFaces.size() << endl;
-
-	myfile.close();
-	*/
+	return mesh;
 }
 
 CatmullClarkNode::CatmullClarkNode() {
@@ -106,35 +67,17 @@ void CatmullClarkNode::_ready() {
 	set_process(true);
 	set_process_input(true);
 
-	//6 vertices for the two triangles
-	vertices.push_back(Vector2(0, 100));
-	vertices.push_back(Vector2(100, 0));
-	vertices.push_back(Vector2(0, 0));
-	vertices.push_back(Vector2(0, 100));
-	vertices.push_back(Vector2(100, 100));
-	vertices.push_back(Vector2(100, 0));
+	trimesh_t newMesh = ReadInFile();
 
-	colors.append(Color(1, 1, 1));
-	colors.append(Color(0, 1, 0));
-	colors.append(Color(0, 0, 1));
-	colors.append(Color(1, 0, 0));
-	colors.append(Color(0, 0, 0));
-	colors.append(Color(0, 1, 0));
+	vector<vertex> newPositions = newMesh.getAllVertexPositions();
 
-	//Copying the data into another set
-	_vertices.push_back(Vector2(0, 100));
-	_vertices.push_back(Vector2(100, 0));
-	_vertices.push_back(Vector2(0, 0));
-	_vertices.push_back(Vector2(0, 100));
-	_vertices.push_back(Vector2(100, 100));
-	_vertices.push_back(Vector2(100, 0));
-
-	_colors.append(Color(1, 1, 1));
-	_colors.append(Color(0, 1, 0));
-	_colors.append(Color(0, 0, 1));
-	_colors.append(Color(1, 0, 0));
-	_colors.append(Color(0, 0, 0));
-	_colors.append(Color(0, 1, 0));
+	for (int i = 0; i < newPositions.size(); i++)
+	{
+		vertices.push_back(Vector2(newPositions[i].x, newPositions[i].y));
+		colors.append(Color(0, 1, 0));
+		_vertices.push_back(Vector2(newPositions[i].x, newPositions[i].y));
+		_colors.append(Color(0, 1, 0));
+	}
 }
 
 void CatmullClarkNode::_update() {
@@ -257,118 +200,3 @@ void CatmullClarkNode::_notification(int p_what) {
 		} break;
 	}
 }
-
-/*
-using std::back_inserter;
-using std::cout;
-using std::endl;
-using std::istream;
-using std::istream_iterator;
-using std::istringstream;
-using std::string;
-using std::vector;
-
-struct objface {
-	unsigned int id;
-	vector<unsigned int> vids;
-	vector<unsigned int> nids;
-};
-
-struct mesh
-{
-	vector<Vector2> verteces;
-};
-
-struct vertex 
-{
-	Vector2 loc;
-	int id;
-};
-
-vector<struct objface> objfaces;
-
-int obj_parse_vertex_spec(const string vspec) {
-	unsigned int vid;
-	sscanf(vspec.c_str(), "%d", &vid);
-	return vid;
-}
-
-void obj_parse_line(mesh &objm, string line) {
-	// TODO: support vn directives
-	if (line[0] == 'v' && line[1] == ' ') {
-		vertex *v = new vertex();
-
-		float x, y, z;
-		sscanf(line.c_str(), "v %f %f %f", &x, &y, &z);
-		v->loc = Vector2(x, y);
-		v->id = objm.verteces.size() + 1;
-
-		objm.verteces.push_back(v);
-	} else if (line[0] == 'f' && line[1] == ' ') {
-		istringstream tokenizer(line);
-		vector<string> tokens;
-		copy(istream_iterator<string>(tokenizer),
-				istream_iterator<string>(),
-				back_inserter<vector<string> >(tokens));
-
-		struct objface f;
-		f.id = objfaces.size() + 1;
-		for (unsigned int i = 1; i < tokens.size(); i++) {
-			string token = tokens[i];
-			f.vids.push_back(obj_parse_vertex_spec(token));
-		}
-
-		objfaces.push_back(f);
-	}
-}
-
-void obj_add_triangle(mesh &objm, vector<unsigned int> vids) {
-	face *f = new face();
-	f->id = objm.faces.size() + 1;
-
-	edge *last_edge;
-	for (unsigned int i = 0; i < vids.size(); i++) {
-		edge *e = new edge();
-		e->vert = objm.verteces[vids[i] - 1];
-		objm.verteces[vids[i] - 1]->e = e;
-		e->f = f;
-		e->id = objm.edges.size() + 1;
-		e->pair = NULL;
-		if (i != 0) {
-			last_edge->next = e;
-		} else {
-			f->e = e;
-		}
-
-		last_edge = e;
-		objm.edges.push_back(e);
-	}
-	last_edge->next = f->e;
-	f->calculate_normal();
-	objm.faces.push_back(f);
-}
-
-bool load_obj(istream &file, mesh &mesh) {
-	if (!file.good()) {
-		cout << "Could not read file." << endl;
-		return false;
-	}
-
-	string line;
-	while (file.good()) {
-		getline(file, line);
-		obj_parse_line(mesh, line);
-	}
-
-	for (auto objf = objfaces.begin(); objf != objfaces.end(); objf++) {
-		obj_add_triangle(mesh, objf->vids);
-	}
-	merge_half_edges(mesh);
-
-	cout << "Loaded mesh: " << endl
-		 << "  " << mesh.verteces.size() << " verteces." << endl
-		 << "  " << mesh.edges.size() << " edges." << endl
-		 << "  " << objfaces.size() << " faces in OBJ file." << endl;
-	return true;
-}
-*/

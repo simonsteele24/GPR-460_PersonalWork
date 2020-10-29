@@ -15,7 +15,7 @@ neighbors of vertex 3:  1 2
 
 int main( int argc, char* argv[] )
 {
-    std::vector< triangle_t > triangles;
+    /*std::vector< triangle_t > triangles;
     
     // ... fill triangles ...
     triangles.resize( 2 );
@@ -46,6 +46,6 @@ int main( int argc, char* argv[] )
         }
         std::cout << '\n';
     }
-    
+    */
     return 0;
 }

@@ -60,11 +60,14 @@ public:
     //       but could do this for callers who do not already have edges.
     // NOTE: 'triangles' and 'edges' are not needed after the call to build()
     //       completes and may be destroyed.
-    void build( const unsigned long num_vertices, const unsigned long num_triangles, const triangle_t* triangles, const unsigned long num_edges, const edge_t* edges );
-    
+    void build( const unsigned long num_vertices, const unsigned long num_triangles, const triangle_t* triangles, const unsigned long num_edges, const edge_t* edges, const std::vector<vertex>* _verteces);
+
+	std::vector<vertex> getAllVertexPositions();
+
     void clear()
     {
         m_halfedges.clear();
+		m_vertex_positions.clear();
         m_vertex_halfedges.clear();
         m_face_halfedges.clear();
         m_edge_halfedges.clear();
@@ -195,6 +198,8 @@ private:
     std::vector< index_t > m_face_halfedges;
     // Offset into the 'halfedges' sequence, one per edge (unordered pair of vertex indices).
     std::vector< index_t > m_edge_halfedges;
+	// Positions of verteces
+	std::vector<vertex> m_vertex_positions;
     // A map from an ordered edge (an std::pair of index_t's) to an offset into the 'halfedge' sequence.
     typedef std::map< std::pair< index_t, index_t >, index_t > directed_edge2index_map_t;
     directed_edge2index_map_t m_directed_edge2he_index;

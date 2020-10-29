@@ -26,8 +26,7 @@ trimesh_t::index_t directed_edge2face_index( const directed_edge2index_map_t& de
     return it->second;
 }
 
-void trimesh_t::build( const unsigned long num_vertices, const unsigned long num_triangles, const triangle_t* triangles, const unsigned long num_edges, const edge_t* edges )
-{
+void trimesh_t::build(const unsigned long num_vertices, const unsigned long num_triangles, const triangle_t *triangles, const unsigned long num_edges, const edge_t *edges, const std::vector<vertex> *_verteces) {
     /*
     Generates all half edge data structures for the mesh given by its vertices 'self.vs'
     and faces 'self.faces'.
@@ -52,6 +51,7 @@ void trimesh_t::build( const unsigned long num_vertices, const unsigned long num
     m_face_halfedges.resize( num_triangles, -1 );
     m_edge_halfedges.resize( num_edges, -1 );
     m_halfedges.reserve( num_edges*2 );
+	m_vertex_positions = *_verteces;
     
     for( int ei = 0; ei < num_edges; ++ei )
     {
@@ -246,4 +246,16 @@ void unordered_edges_from_triangles( const unsigned long num_triangles, const tr
         edges_out.at(e).start() = it->first;
         edges_out.at(e).end() = it->second;
     }
+}
+
+std::vector<vertex> trimesh_t::getAllVertexPositions()
+{
+	std::vector<vertex> newVerts;
+
+	for (int i = 0; i < m_halfedges.size(); i++)
+	{
+		newVerts.push_back(m_vertex_positions[m_halfedges[i].to_vertex]);
+	}
+
+	return newVerts;
 }
