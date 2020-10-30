@@ -31,6 +31,11 @@ using namespace std;
 			y = a.y;
 			return a;
 		}
+
+		inline bool operator==(vertex a)
+		{
+			return x == a.x && y == a.y;
+		}
 	};
 
     struct edge_t

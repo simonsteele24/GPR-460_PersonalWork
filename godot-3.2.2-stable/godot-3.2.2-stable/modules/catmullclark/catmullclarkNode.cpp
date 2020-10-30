@@ -14,30 +14,38 @@ struct Face {
 	vector<int> nurbs;
 };
 
-trimesh_t ReadInFile() {
+trimesh_t ReadInFile()
+{
 	vector<triangle_t> triangles;
 	vector<vertex> verteces;
 
-	verteces.resize(3);
+	verteces.resize(4);
 	verteces[0] = vertex(0, 0);
-	verteces[1] = vertex(0, 250);
-	verteces[2] = vertex(100, 100);
+	verteces[1] = vertex(100, 0);
+	verteces[2] = vertex(0, 100);
+	verteces[3] = vertex(100, 100);
 
 	// ... fill triangles ...
-	triangles.resize(1);
+	triangles.resize(2);
 	triangles[0].v[0] = 0;
-	triangles[0].positions[0] = vertex(verteces[0].x,verteces[0].y);
+	triangles[0].positions[0] = verteces[0];
 	triangles[0].v[1] = 1;
-	triangles[0].positions[1] = vertex(verteces[1].x,verteces[1].y);
+	triangles[0].positions[1] = verteces[1];
 	triangles[0].v[2] = 2;
-	triangles[0].positions[2] = vertex(verteces[2].x,verteces[2].y);
-	const int kNumVertices = 3;
+	triangles[0].positions[2] = verteces[2];
+	triangles[1].v[0] = 2;
+	triangles[1].positions[0] = verteces[2];
+	triangles[1].v[1] = 1;
+	triangles[1].positions[1] = verteces[1];
+	triangles[1].v[2] = 3;
+	triangles[1].positions[2] = verteces[3];
+	const int kNumVertices = 4;
 
 	vector<edge_t> edges;
 	unordered_edges_from_triangles(triangles.size(), &triangles[0], edges);
 
 	trimesh_t mesh;
-	mesh.build(kNumVertices, triangles.size(), &triangles[0], edges.size(), &edges[0], &verteces);
+	mesh.build(kNumVertices, triangles.size(), &triangles, edges.size(), &edges[0], &verteces);
 
 	vector<vertex> points;
 	points = mesh.generateEdgePoints();
@@ -73,8 +81,7 @@ void CatmullClarkNode::_ready() {
 	set_process_input(true);
 
 	trimesh_t newMesh = ReadInFile();
-
-	vector<vertex> newPositions = newMesh.generateNewVertexPoints();
+	vector<vertex> newPositions = newMesh.getAllVertexPositions();
 
 	for (int i = 0; i < newPositions.size(); i++)
 	{
@@ -87,8 +94,18 @@ void CatmullClarkNode::_ready() {
 
 void CatmullClarkNode::_update() {
 	int _numTriangles = pow(4, numSubdivisions);
-	ReadInFile();
-	if (_numTriangles > 1 && redraw) //no need to enter if we are using just the base mesh
+
+	trimesh_t newMesh = ReadInFile();
+	vector<vertex> newPositions = newMesh.getAllVertexPositions();
+
+	for (int i = 0; i < newPositions.size(); i++) {
+		vertices.push_back(Vector2(newPositions[i].x, newPositions[i].y));
+		colors.append(Color(0, 1, 0));
+		_vertices.push_back(Vector2(newPositions[i].x, newPositions[i].y));
+		_colors.append(Color(0, 1, 0));
+	}
+
+	if (_numTriangles > 1 && redraw && false) //no need to enter if we are using just the base mesh
 	{
 		_vertices.resize(0);
 		_colors.resize(0);

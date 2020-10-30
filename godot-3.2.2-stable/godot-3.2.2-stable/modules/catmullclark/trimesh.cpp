@@ -26,7 +26,7 @@ trimesh_t::index_t directed_edge2face_index( const directed_edge2index_map_t& de
     return it->second;
 }
 
-void trimesh_t::build(const unsigned long num_vertices, const unsigned long num_triangles, const triangle_t *triangles, const unsigned long num_edges, const edge_t *edges, const std::vector<vertex> *_verteces) {
+void trimesh_t::build(const unsigned long num_vertices, const unsigned long num_triangles, const std::vector<triangle_t> *triangles, const unsigned long num_edges, const edge_t *edges, const std::vector<vertex> *_verteces) {
     /*
     Generates all half edge data structures for the mesh given by its vertices 'self.vs'
     and faces 'self.faces'.
@@ -39,10 +39,12 @@ void trimesh_t::build(const unsigned long num_vertices, const unsigned long num_
 
 	m_face_positions.clear();
 
+	m_faces = *triangles;
+
     directed_edge2index_map_t de2fi;
     for( int fi = 0; fi < num_triangles; ++fi )
     {
-        const triangle_t& tri = triangles[fi];
+        const triangle_t& tri = triangles[0][fi];
         de2fi[ std::make_pair( tri.v[0], tri.v[1] ) ] = fi;
         de2fi[ std::make_pair( tri.v[1], tri.v[2] ) ] = fi;
         de2fi[ std::make_pair( tri.v[2], tri.v[0] ) ] = fi;
@@ -137,7 +139,7 @@ void trimesh_t::build(const unsigned long num_vertices, const unsigned long num_
             continue;
         }
         
-        const triangle_t& face = triangles[ he.face ];
+        const triangle_t& face = triangles[0][ he.face ];
         const index_t i = he.to_vertex;
         
         index_t j = -1;
@@ -256,18 +258,20 @@ std::vector<vertex> trimesh_t::getAllVertexPositions()
 {
 	std::vector<vertex> newVerts;
 
-	for (int i = 0; i < m_halfedges.size(); i++)
+	for (int i = 0; i < m_faces.size(); i++)
 	{
-		newVerts.push_back(m_vertex_positions[m_halfedges[i].to_vertex]);
+		for (int j = 0; j < m_faces[i].positions.size(); j++)
+		{
+			newVerts.push_back(m_faces[i].positions[j]);
+		}
 	}
 
 	return newVerts;
 }
 
-
 vertex getAverage(std::vector<vertex> verteces)
 {
-	int totalX, totalY;
+	int totalX = 0, totalY = 0;
 	int numOfEntries = verteces.size();
 
 	if (numOfEntries == 0)
