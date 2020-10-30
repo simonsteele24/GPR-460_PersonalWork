@@ -1,12 +1,12 @@
 #include "catmullclarkNode.h"
 
+#include "trimesh.h"
 #include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <string>
 #include <vector>
-#include "trimesh.h"
 
 using namespace std;
 
@@ -14,32 +14,47 @@ struct Face {
 	vector<int> nurbs;
 };
 
-trimesh_t ReadInFile()
-{
-	vector<triangle_t> triangles;
+trimesh_t ReadInFile() {
+	ifstream objFile;
+	string input;
+
 	vector<vertex> verteces;
+	vector<triangle_t> triangles;
 
-	verteces.resize(4);
-	verteces[0] = vertex(0, 0);
-	verteces[1] = vertex(100, 0);
-	verteces[2] = vertex(0, 100);
-	verteces[3] = vertex(100, 100);
+	objFile.open("C:\\Users\\simon\\Desktop\\untitled.obj");
 
-	// ... fill triangles ...
-	triangles.resize(2);
-	triangles[0].v[0] = 0;
-	triangles[0].positions[0] = verteces[0];
-	triangles[0].v[1] = 1;
-	triangles[0].positions[1] = verteces[1];
-	triangles[0].v[2] = 2;
-	triangles[0].positions[2] = verteces[2];
-	triangles[1].v[0] = 2;
-	triangles[1].positions[0] = verteces[2];
-	triangles[1].v[1] = 1;
-	triangles[1].positions[1] = verteces[1];
-	triangles[1].v[2] = 3;
-	triangles[1].positions[2] = verteces[3];
-	const int kNumVertices = 4;
+	while (!objFile.eof()) {
+		objFile >> input;
+
+		if (input == "v") {
+			objFile >> input;
+			float newX = stof(input);
+			objFile >> input;
+			objFile >> input;
+			float newY = stof(input);
+			verteces.push_back(vertex(newX, newY));
+		}
+
+		if (input == "f") {
+			triangles.push_back(triangle_t());
+			objFile >> input;
+			int indexOne = input[0] - '0';
+			objFile >> input;
+			int indexTwo = input[0] - '0';
+			objFile >> input;
+			int indexThree = input[0] - '0';
+
+			triangles.back().v[0] = indexOne - 1;
+			triangles.back().v[1] = indexTwo - 1;
+			triangles.back().v[2] = indexThree - 1;
+
+			triangles.back().positions[0] = verteces[indexOne - 1];
+			triangles.back().positions[1] = verteces[indexTwo - 1];
+			triangles.back().positions[2] = verteces[indexThree - 1];
+		}
+	}
+
+	const int kNumVertices = verteces.size();
 
 	vector<edge_t> edges;
 	unordered_edges_from_triangles(triangles.size(), &triangles[0], edges);
@@ -49,7 +64,6 @@ trimesh_t ReadInFile()
 
 	vector<vertex> points;
 	points = mesh.generateEdgePoints();
-
 
 	// Use 'mesh' to walk the connectivity.
 	vector<index_t> neighs;
@@ -83,8 +97,7 @@ void CatmullClarkNode::_ready() {
 	trimesh_t newMesh = ReadInFile();
 	vector<vertex> newPositions = newMesh.getAllVertexPositions();
 
-	for (int i = 0; i < newPositions.size(); i++)
-	{
+	for (int i = 0; i < newPositions.size(); i++) {
 		vertices.push_back(Vector2(newPositions[i].x, newPositions[i].y));
 		colors.append(Color(0, 1, 0));
 		_vertices.push_back(Vector2(newPositions[i].x, newPositions[i].y));
@@ -94,16 +107,6 @@ void CatmullClarkNode::_ready() {
 
 void CatmullClarkNode::_update() {
 	int _numTriangles = pow(4, numSubdivisions);
-
-	trimesh_t newMesh = ReadInFile();
-	vector<vertex> newPositions = newMesh.getAllVertexPositions();
-
-	for (int i = 0; i < newPositions.size(); i++) {
-		vertices.push_back(Vector2(newPositions[i].x, newPositions[i].y));
-		colors.append(Color(0, 1, 0));
-		_vertices.push_back(Vector2(newPositions[i].x, newPositions[i].y));
-		_colors.append(Color(0, 1, 0));
-	}
 
 	if (_numTriangles > 1 && redraw && false) //no need to enter if we are using just the base mesh
 	{
