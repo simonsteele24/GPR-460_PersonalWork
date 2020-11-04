@@ -18,12 +18,18 @@ using namespace std;
 			y = 0;
 		}
 
-		vertex(int _x, int _y)
+		vertex(float _x, float _y)
 		{
 			x = _x;
 			y = _y;
 		}
 
+		vertex average(vertex a, vertex b)
+		{
+			float newX = (a.x + b.x) / 2;
+			float newY = (a.y + b.y) / 2;
+			return vertex(newX, newY);
+		}
 
 		inline vertex operator=(vertex a)
 		{

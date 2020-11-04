@@ -14,14 +14,79 @@ struct Face {
 	vector<int> nurbs;
 };
 
-trimesh_t ReadInFile() {
+void SubDivide(vector<triangle_t> & tris, vector<vertex> & verteces)
+{
+	verteces.clear();
+	vector<triangle_t> newtris;
+	for (int i = 0; i < tris.size(); i++)
+	{
+		triangle_t triOne = triangle_t();
+		triangle_t triTwo = triangle_t();
+		triangle_t triThree = triangle_t();
+		triangle_t triFour = triangle_t();
+
+		vertex pointZeroToOne = getAverage(vector<vertex>{tris[i].positions[0], tris[i].positions[1]});
+		vertex pointOneToTwo = getAverage(vector<vertex>{tris[i].positions[1], tris[i].positions[2]});
+		vertex pointTwoToZero = getAverage(vector<vertex>{tris[i].positions[2], tris[i].positions[0]});
+
+		verteces.push_back(tris[i].positions[0]);
+		verteces.push_back(tris[i].positions[1]);
+		verteces.push_back(tris[i].positions[2]);
+
+		verteces.push_back(pointZeroToOne);
+		verteces.push_back(pointOneToTwo);
+		verteces.push_back(pointTwoToZero);
+
+
+		triOne.v[0] = tris[i].v[0];
+		triOne.v[1] = 3;
+		triOne.v[2] = 5;
+
+		triOne.positions[0] = tris[i].positions[0];
+		triOne.positions[1] = pointZeroToOne;
+		triOne.positions[2] = pointTwoToZero;
+
+
+		triTwo.v[0] = tris[i].v[1];
+		triTwo.v[1] = 3;
+		triTwo.v[2] = 4;
+
+		triTwo.positions[0] = tris[i].positions[1];
+		triTwo.positions[1] = pointZeroToOne;
+		triTwo.positions[2] = pointOneToTwo;
+
+		triThree.v[0] = tris[i].v[2];
+		triThree.v[1] = 4;
+		triThree.v[2] = 5;
+
+		triThree.positions[0] = tris[i].positions[2];
+		triThree.positions[1] = pointOneToTwo;
+		triThree.positions[2] = pointTwoToZero;
+
+		triFour.v[0] = 3;
+		triFour.v[1] = 4;
+		triFour.v[2] = 5;
+
+		triFour.positions[0] = pointZeroToOne;
+		triFour.positions[1] = pointOneToTwo;
+		triFour.positions[2] = pointTwoToZero;
+
+		newtris.push_back(triOne);
+		newtris.push_back(triTwo);
+		newtris.push_back(triThree);
+		newtris.push_back(triFour);
+	}
+	tris = newtris;
+}
+
+trimesh_t ReadInFile(bool doSub) {
 	ifstream objFile;
 	string input;
 
 	vector<vertex> verteces;
 	vector<triangle_t> triangles;
 
-	objFile.open("C:\\Users\\simon\\Desktop\\untitled.obj");
+	objFile.open("C:\\Users\\simon.steele\\Desktop\\untitled.obj");
 
 	while (!objFile.eof()) {
 		objFile >> input;
@@ -54,6 +119,7 @@ trimesh_t ReadInFile() {
 		}
 	}
 
+
 	const int kNumVertices = verteces.size();
 
 	vector<edge_t> edges;
@@ -63,7 +129,14 @@ trimesh_t ReadInFile() {
 	mesh.build(kNumVertices, triangles.size(), &triangles, edges.size(), &edges[0], &verteces);
 
 	vector<vertex> points;
-	points = mesh.generateEdgePoints();
+	if (doSub)
+	{
+		points = mesh.generateNewVertexPoints();
+	}
+	else
+	{
+		points = mesh.generateEdgePoints();
+	}
 
 	// Use 'mesh' to walk the connectivity.
 	vector<index_t> neighs;
@@ -94,7 +167,7 @@ void CatmullClarkNode::_ready() {
 	set_process(true);
 	set_process_input(true);
 
-	trimesh_t newMesh = ReadInFile();
+	trimesh_t newMesh = ReadInFile(false);
 	vector<vertex> newPositions = newMesh.getAllVertexPositions();
 
 	for (int i = 0; i < newPositions.size(); i++) {
@@ -194,7 +267,6 @@ void CatmullClarkNode::_draw() {
 
 void CatmullClarkNode::_input(InputEvent *e) {
 	if (e->is_action_pressed("ui_up")) {
-		ReadInFile();
 		numSubdivisions += 1;
 		if (numSubdivisions > 5)
 			numSubdivisions = 1;
@@ -208,6 +280,7 @@ void CatmullClarkNode::_notification(int p_what) {
 		case NOTIFICATION_PROCESS: {
 			if (Input::get_singleton()->is_action_pressed("ui_up")) {
 				numSubdivisions += 1;
+				ReadInFile(true);
 				if (numSubdivisions > 5)
 					numSubdivisions = 1;
 				redraw = true;

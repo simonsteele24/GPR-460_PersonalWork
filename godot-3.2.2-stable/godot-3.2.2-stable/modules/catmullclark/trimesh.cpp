@@ -271,8 +271,8 @@ std::vector<vertex> trimesh_t::getAllVertexPositions()
 
 vertex getAverage(std::vector<vertex> verteces)
 {
-	int totalX = 0, totalY = 0;
-	int numOfEntries = verteces.size();
+	float totalX = 0, totalY = 0;
+	float numOfEntries = verteces.size();
 
 	if (numOfEntries == 0)
 	{
