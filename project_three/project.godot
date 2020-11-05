@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="project_three"
-run/main_scene="res://CatmullClarkNode.tscn"
+run/main_scene="res://catmullclark.tscn"
 config/icon="res://icon.png"
 
 [rendering]
