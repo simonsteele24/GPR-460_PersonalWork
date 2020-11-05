@@ -80,6 +80,8 @@ class mesh {
         mesh(const mesh &other);
         void calculate_normals(normal_mode mode);
         void scale_to_unit_cube();
+		void subdivide(int faceIndex);
+
         bounds get_bounds() const;
 
         std::vector<vertex*> verteces;

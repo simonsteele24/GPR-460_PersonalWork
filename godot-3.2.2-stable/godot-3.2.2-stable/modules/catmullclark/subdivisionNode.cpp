@@ -18,6 +18,7 @@ SubdivisionNode::SubdivisionNode()
 //Custom Functions
 void SubdivisionNode::_ready()
 {
+	he_mesh->subdivide(0);
 	numTriangles = he_mesh->faces.size();
 	set_process(true);
 	set_process_input(true);
@@ -199,10 +200,10 @@ void SubdivisionNode::_notification(int p_what)
 	case NOTIFICATION_PROCESS:
 	{
 		if (Input::get_singleton()->is_action_pressed("ui_up") ){
-			numSubdivisions += 1;
-			if (numSubdivisions > 5)
-				numSubdivisions = 1;
-			redraw = true;
+			//numSubdivisions += 1;
+			//if (numSubdivisions > 5)
+				//numSubdivisions = 1;
+			//redraw = true;
 			SceneTree::get_singleton()->set_input_as_handled();
 		}
 		_update();
