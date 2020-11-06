@@ -281,7 +281,7 @@ void mesh::subdivide(int faceIndex)
 
 	// Add new verts
 	currentEdge = *faces[faceIndex]->e;
-	edgeToBeModifiedID = currentEdge.id;
+	edgeToBeModifiedID = currentEdge.id - 1;
 	originalEdges.push_back(edgeToBeModifiedID);
 	verteces.push_back(new vertex());
 	verteces[verteces.size()-1]->id = verteces.size();
@@ -297,7 +297,7 @@ void mesh::subdivide(int faceIndex)
 	edges[edgeToBeModifiedID]->vert = verteces[verteces.size() - 1];
 
     currentEdge = *edges[edges.size()-1]->next;
-	edgeToBeModifiedID = currentEdge.id;
+	edgeToBeModifiedID = currentEdge.id - 1;
 	originalEdges.push_back(edgeToBeModifiedID);
 	verteces.push_back(new vertex());
 	verteces[verteces.size() - 1]->id = verteces.size();
@@ -313,7 +313,7 @@ void mesh::subdivide(int faceIndex)
 	edges[edgeToBeModifiedID]->vert = verteces[verteces.size() - 1];
 
 	currentEdge = *edges[edges.size() - 1]->next;
-	edgeToBeModifiedID = currentEdge.id;
+	edgeToBeModifiedID = currentEdge.id - 1;
 	originalEdges.push_back(edgeToBeModifiedID);
 	verteces.push_back(new vertex());
 	verteces[verteces.size() - 1]->id = verteces.size();
@@ -348,6 +348,30 @@ void mesh::subdivide(int faceIndex)
 	edges[edges.size() - 1]->vert = verteces[newVerteces[1]];
 	edges[originalEdges[2]]->next = edges[edges.size() - 1];
 
+
+	vector<int> innerFaceVerteces;
+
+	edges.push_back(new edge());
+	edges[edges.size() - 1]->id = edges.size();
+	edges[edges.size() - 1]->vert = verteces[newVerteces[0]];
+	innerFaceVerteces.push_back(edges.size() - 1);
+
+	edges.push_back(new edge());
+	edges[edges.size() - 1]->id = edges.size();
+	edges[edges.size() - 1]->vert = verteces[newVerteces[1]];
+	innerFaceVerteces.push_back(edges.size() - 1);
+
+	edges.push_back(new edge());
+	edges[edges.size() - 1]->id = edges.size();
+	edges[edges.size() - 1]->vert = verteces[newVerteces[2]];
+	innerFaceVerteces.push_back(edges.size() - 1);
+
+	edges[innerFaceVerteces[0]]->next = edges[innerFaceVerteces[1]];
+	edges[innerFaceVerteces[1]]->next = edges[innerFaceVerteces[2]];
+	edges[innerFaceVerteces[2]]->next = edges[innerFaceVerteces[0]];
+
+
+
 	// remove current face
 	faces.erase(faces.begin() + faceIndex);
 
@@ -362,6 +386,10 @@ void mesh::subdivide(int faceIndex)
 	faces.push_back(new face());
 	faces[faces.size() - 1]->id = faces.size();
 	faces[faces.size() - 1]->e = edges[originalEdges[2]];
+
+	faces.push_back(new face());
+	faces[faces.size() - 1]->id = faces.size();
+	faces[faces.size() - 1]->e = edges[innerFaceVerteces[0]];
 }
 
 } // namespace meshparse
