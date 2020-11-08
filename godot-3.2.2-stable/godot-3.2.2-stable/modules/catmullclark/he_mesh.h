@@ -41,6 +41,12 @@ class vertex {
         Vector3 normal;
         // the edge that points to this vertex
         edge* e;
+
+		void addEdgePoint(Vector3 newPoint);
+		void addFacePoint(Vector3 newPoint);
+
+		std::vector<Vector3> edgePoints;
+		std::vector<Vector3> facePoints;
 };
 
 class edge {
@@ -96,6 +102,8 @@ class vector_comparitor {
 
 // loads a mesh, guessing the appropriate loader from the file name.
 bool load_mesh(const std::string &filename, std::ifstream &input, mesh &mesh);
+
+void generateVertexData(mesh &mesh);
 
 } // namespace meshparse
 

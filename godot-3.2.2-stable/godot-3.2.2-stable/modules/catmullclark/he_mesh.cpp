@@ -31,6 +31,23 @@ vertex::vertex(const vertex &other) {
     id = other.id;
 }
 
+void vertex::addEdgePoint(Vector3 newPoint)
+{
+	if (std::count(edgePoints.begin(), edgePoints.end(), newPoint))
+    {
+		edgePoints.push_back(newPoint);
+    }
+}
+
+void vertex::addFacePoint(Vector3 newPoint)
+{
+	if (!(std::count(facePoints.begin(), facePoints.end(), newPoint)))
+    {
+		facePoints.push_back(newPoint);
+    }
+}
+
+
 bool vertex::operator==(const vertex &other) {
     return loc == other.loc;
 }
@@ -269,6 +286,54 @@ bool vector_comparitor::operator()(const Vector3 &v1, const Vector3 &v2) const {
     return false;
 }
 
+void generateVertexData(mesh& mesh)
+{
+	for (int i = 0; i < mesh.verteces.size(); i++)
+	{
+		mesh.verteces[i]->edgePoints.clear();
+		mesh.verteces[i]->facePoints.clear();
+	}
+
+	int edgeID = 0;
+	int currentEdgeID = 0;
+	int numOfVerteces = 0;
+	Vector3 vertPositions;
+
+	for (int i = 0; i < mesh.faces.size(); i++)
+	{
+		vertPositions = Vector3(0, 0, 0);
+		numOfVerteces = 1;
+		edgeID = mesh.faces[i]->e->id;
+		vertPositions += mesh.edges[edgeID - 1]->vert->loc;
+		currentEdgeID = mesh.faces[i]->e->next->id;
+
+		while (currentEdgeID != edgeID)
+		{
+			vertPositions += mesh.edges[currentEdgeID - 1]->vert->loc;
+			numOfVerteces++;
+			currentEdgeID = mesh.edges[currentEdgeID - 1]->next->id;
+		}
+
+		vertPositions /= numOfVerteces;
+
+
+		edgeID = mesh.faces[i]->e->id;
+		mesh.verteces[mesh.edges[edgeID - 1]->vert->id - 1]->addEdgePoint(mesh.edges[edgeID - 1]->midpoint());
+		mesh.verteces[mesh.edges[edgeID - 1]->vert->id - 1]->addEdgePoint(mesh.edges[edgeID - 1]->next->midpoint());
+		mesh.verteces[mesh.edges[edgeID - 1]->vert->id - 1]->addFacePoint(vertPositions);
+		currentEdgeID = mesh.edges[edgeID - 1]->next->id;
+
+		while (currentEdgeID != edgeID)
+		{
+			mesh.verteces[mesh.edges[currentEdgeID - 1]->vert->id - 1]->addEdgePoint(mesh.edges[currentEdgeID - 1]->midpoint());
+			mesh.verteces[mesh.edges[currentEdgeID - 1]->vert->id - 1]->addEdgePoint(mesh.edges[currentEdgeID - 1]->next->midpoint());
+			mesh.verteces[mesh.edges[currentEdgeID - 1]->vert->id - 1]->addFacePoint(vertPositions);
+			currentEdgeID = mesh.edges[currentEdgeID - 1]->next->id;
+		}
+
+	}
+}
+
 void mesh::subdivide(int faceIndex)
 {
 	edge currentEdge;
@@ -276,8 +341,16 @@ void mesh::subdivide(int faceIndex)
 	vector<int> newEdges;
 	vector<int> originalEdges;
 	vector<int> newVerteces;
-
+	vector<int> originalVerteces;
 	int edgeToBeModifiedID;
+
+	meshparse::generateVertexData(*this);
+
+	for (int i = 0; i < verteces.size(); i++)
+	{
+		originalVerteces.push_back(verteces[i]->id - 1);
+	}
+
 
 	// Add new verts
 	currentEdge = *faces[faceIndex]->e;
