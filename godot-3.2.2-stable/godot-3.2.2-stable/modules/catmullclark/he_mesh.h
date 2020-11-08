@@ -45,6 +45,9 @@ class vertex {
 		void addEdgePoint(Vector3 newPoint);
 		void addFacePoint(Vector3 newPoint);
 
+		Vector3 averageFacePoints();
+		Vector3 averageEdgePoints();
+
 		std::vector<Vector3> edgePoints;
 		std::vector<Vector3> facePoints;
 };
