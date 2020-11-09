@@ -43,12 +43,24 @@ void SubdivisionNode::_update() {
 
 		for (int j = 0; j < numSubdivisions; j++)
 		{
+			newMesh->controlPoints.clear();
+			newMesh->newEdgePoints.clear();
 			int length = newMesh->faces.size();
+
+			// Step One catmull clark
 			for (int i = 0; i < length; i++)
 			{
 				newMesh->subdivide(i);
 			}
+
+			// Step Two catmull clark
 			meshparse::generateVertexData(*newMesh);
+			newMesh->changeEdgePoints();
+
+			// Step Three catmull clark
+			newMesh->changeControlPoints();
+
+
 			for (int i = 0; i < length; i++)
 			{
 				newMesh->reconnectFaces(0);

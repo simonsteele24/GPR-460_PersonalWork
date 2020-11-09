@@ -97,6 +97,7 @@ class mesh {
 		void subdivide(int faceIndex);
 		void reconnectFaces(int faceIndex);
 		void changeEdgePoints();
+		void changeControlPoints();
 
         bounds get_bounds() const;
 
@@ -104,6 +105,7 @@ class mesh {
         std::vector<edge*> edges;
         std::vector<face*> faces;
 
+		std::vector<int> controlPoints;
 		std::vector<int> newEdgePoints;
 };
 
