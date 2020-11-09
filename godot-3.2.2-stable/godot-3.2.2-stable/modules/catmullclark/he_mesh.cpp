@@ -328,132 +328,102 @@ void generateVertexData(mesh &mesh) {
 
 void mesh::subdivide(int faceIndex) {
 	edge currentEdge;
-
-	vector<int> newEdges;
-	vector<int> originalEdges;
-	vector<int> newVerteces;
-	vector<int> originalVerteces;
+	
 	int edgeToBeModifiedID;
 
-	meshparse::generateVertexData(*this);
-
-	for (int i = 0; i < verteces.size(); i++) {
-		originalVerteces.push_back(verteces[i]->id - 1);
+	for (int i = 0; i < verteces.size(); i++)
+	{
+		faces[faceIndex]->originalVerteces.push_back(verteces[i]->id - 1);
 	}
 
 	// Add new verts
 	currentEdge = *faces[faceIndex]->e;
 	edgeToBeModifiedID = currentEdge.id - 1;
-	originalEdges.push_back(edgeToBeModifiedID);
+	faces[faceIndex]->originalEdges.push_back(edgeToBeModifiedID);
 	verteces.push_back(new vertex());
 	verteces[verteces.size() - 1]->id = verteces.size();
 	verteces[verteces.size() - 1]->loc = edges[edgeToBeModifiedID]->midpoint();
-	newVerteces.push_back(verteces.size() - 1);
+	faces[faceIndex]->newVerteces.push_back(verteces.size() - 1);
 
 	edges.push_back(new edge());
 	edges[edges.size() - 1]->id = edges.size();
-	newEdges.push_back(edges.size() - 1);
-	edges[newEdges[0]]->next = edges[edgeToBeModifiedID]->next;
-	edges[edgeToBeModifiedID]->next = edges[newEdges[0]];
-	edges[newEdges[0]]->vert = edges[edgeToBeModifiedID]->vert;
+	faces[faceIndex]->newEdges.push_back(edges.size() - 1);
+	edges[faces[faceIndex]->newEdges[0]]->next = edges[edgeToBeModifiedID]->next;
+	edges[edgeToBeModifiedID]->next = edges[faces[faceIndex]->newEdges[0]];
+	edges[faces[faceIndex]->newEdges[0]]->vert = edges[edgeToBeModifiedID]->vert;
 	edges[edgeToBeModifiedID]->vert = verteces[verteces.size() - 1];
 
 	currentEdge = *edges[edges.size() - 1]->next;
 	edgeToBeModifiedID = currentEdge.id - 1;
-	originalEdges.push_back(edgeToBeModifiedID);
+	faces[faceIndex]->originalEdges.push_back(edgeToBeModifiedID);
 	verteces.push_back(new vertex());
 	verteces[verteces.size() - 1]->id = verteces.size();
 	verteces[verteces.size() - 1]->loc = edges[edgeToBeModifiedID]->midpoint();
-	newVerteces.push_back(verteces.size() - 1);
+	faces[faceIndex]->newVerteces.push_back(verteces.size() - 1);
 
 	edges.push_back(new edge());
 	edges[edges.size() - 1]->id = edges.size();
-	newEdges.push_back(edges.size() - 1);
-	edges[newEdges[1]]->next = edges[edgeToBeModifiedID]->next;
-	edges[edgeToBeModifiedID]->next = edges[newEdges[1]];
-	edges[newEdges[1]]->vert = edges[edgeToBeModifiedID]->vert;
+	faces[faceIndex]->newEdges.push_back(edges.size() - 1);
+	edges[faces[faceIndex]->newEdges[1]]->next = edges[edgeToBeModifiedID]->next;
+	edges[edgeToBeModifiedID]->next = edges[faces[faceIndex]->newEdges[1]];
+	edges[faces[faceIndex]->newEdges[1]]->vert = edges[edgeToBeModifiedID]->vert;
 	edges[edgeToBeModifiedID]->vert = verteces[verteces.size() - 1];
 
 	currentEdge = *edges[edges.size() - 1]->next;
 	edgeToBeModifiedID = currentEdge.id - 1;
-	originalEdges.push_back(edgeToBeModifiedID);
+	faces[faceIndex]->originalEdges.push_back(edgeToBeModifiedID);
 	verteces.push_back(new vertex());
 	verteces[verteces.size() - 1]->id = verteces.size();
 	verteces[verteces.size() - 1]->loc = edges[edgeToBeModifiedID]->midpoint();
-	newVerteces.push_back(verteces.size() - 1);
+	faces[faceIndex]->newVerteces.push_back(verteces.size() - 1);
 
 	edges.push_back(new edge());
 	edges[edges.size() - 1]->id = edges.size();
-	newEdges.push_back(edges.size() - 1);
-	edges[newEdges[2]]->next = edges[edgeToBeModifiedID]->next;
-	edges[edgeToBeModifiedID]->next = edges[newEdges[2]];
-	edges[newEdges[2]]->vert = edges[edgeToBeModifiedID]->vert;
+	faces[faceIndex]->newEdges.push_back(edges.size() - 1);
+	edges[faces[faceIndex]->newEdges[2]]->next = edges[edgeToBeModifiedID]->next;
+	edges[edgeToBeModifiedID]->next = edges[faces[faceIndex]->newEdges[2]];
+	edges[faces[faceIndex]->newEdges[2]]->vert = edges[edgeToBeModifiedID]->vert;
 	edges[edgeToBeModifiedID]->vert = verteces[verteces.size() - 1];
 
 	cout << "yo esta aqui" << endl;
 
 	edges.push_back(new edge());
 	edges[edges.size() - 1]->id = edges.size();
-	edges[edges.size() - 1]->vert = verteces[newVerteces[2]];
-	edges[edges.size() - 1]->next = edges[newEdges[2]];
-	edges[originalEdges[0]]->next = edges[edges.size() - 1];
+	edges[edges.size() - 1]->vert = verteces[faces[faceIndex]->newVerteces[2]];
+	edges[edges.size() - 1]->next = edges[faces[faceIndex]->newEdges[2]];
+	edges[faces[faceIndex]->originalEdges[0]]->next = edges[edges.size() - 1];
 
 	edges.push_back(new edge());
 	edges[edges.size() - 1]->id = edges.size();
-	edges[edges.size() - 1]->vert = verteces[newVerteces[0]];
-	edges[edges.size() - 1]->next = edges[newEdges[0]];
-	edges[originalEdges[1]]->next = edges[edges.size() - 1];
+	edges[edges.size() - 1]->vert = verteces[faces[faceIndex]->newVerteces[0]];
+	edges[edges.size() - 1]->next = edges[faces[faceIndex]->newEdges[0]];
+	edges[faces[faceIndex]->originalEdges[1]]->next = edges[edges.size() - 1];
 
 	edges.push_back(new edge());
 	edges[edges.size() - 1]->id = edges.size();
-	edges[edges.size() - 1]->next = edges[newEdges[1]];
-	edges[edges.size() - 1]->vert = verteces[newVerteces[1]];
-	edges[originalEdges[2]]->next = edges[edges.size() - 1];
+	edges[edges.size() - 1]->next = edges[faces[faceIndex]->newEdges[1]];
+	edges[edges.size() - 1]->vert = verteces[faces[faceIndex]->newVerteces[1]];
+	edges[faces[faceIndex]->originalEdges[2]]->next = edges[edges.size() - 1];
 
-	vector<int> innerFaceVerteces;
-
-	edges.push_back(new edge());
-	edges[edges.size() - 1]->id = edges.size();
-	edges[edges.size() - 1]->vert = verteces[newVerteces[0]];
-	innerFaceVerteces.push_back(edges.size() - 1);
-
-	edges.push_back(new edge());
-	edges[edges.size() - 1]->id = edges.size();
-	edges[edges.size() - 1]->vert = verteces[newVerteces[1]];
-	innerFaceVerteces.push_back(edges.size() - 1);
-
-	edges.push_back(new edge());
-	edges[edges.size() - 1]->id = edges.size();
-	edges[edges.size() - 1]->vert = verteces[newVerteces[2]];
-	innerFaceVerteces.push_back(edges.size() - 1);
-
-	edges[innerFaceVerteces[0]]->next = edges[innerFaceVerteces[1]];
-	edges[innerFaceVerteces[1]]->next = edges[innerFaceVerteces[2]];
-	edges[innerFaceVerteces[2]]->next = edges[innerFaceVerteces[0]];
-
-	// remove current face
-	faces.erase(faces.begin() + faceIndex);
-
-	faces.push_back(new face());
-	faces[faces.size() - 1]->id = faces.size();
-	faces[faces.size() - 1]->e = edges[originalEdges[0]];
-
-	faces.push_back(new face());
-	faces[faces.size() - 1]->id = faces.size();
-	faces[faces.size() - 1]->e = edges[originalEdges[1]];
-
-	faces.push_back(new face());
-	faces[faces.size() - 1]->id = faces.size();
-	faces[faces.size() - 1]->e = edges[originalEdges[2]];
-
-	faces.push_back(new face());
-	faces[faces.size() - 1]->id = faces.size();
-	faces[faces.size() - 1]->e = edges[innerFaceVerteces[0]];
-
-	for (int i = 0; i < originalVerteces.size(); i++)
+	for (int i = 0; i < faces[faceIndex]->newVerteces.size(); i++)
 	{
-		int valance = verteces[originalVerteces[i]]->edgePoints.size();
-		verteces[originalVerteces[i]]->loc = (verteces[originalVerteces[i]]->averageFacePoints() / valance) + ((2 * verteces[originalVerteces[i]]->averageEdgePoints()) / valance) + ((verteces[originalVerteces[i]]->loc * (valance - 1)) / valance);
+		newEdgePoints.push_back(faces[faceIndex]->newVerteces[i]);
+	}
+	//for (int i = 0; i < originalVerteces.size(); i++)
+	//{
+	//	int valance = verteces[originalVerteces[i]]->edgePoints.size();
+	//	verteces[originalVerteces[i]]->loc = (verteces[originalVerteces[i]]->averageFacePoints() / valance) + ((2 * verteces[originalVerteces[i]]->averageEdgePoints()) / valance) + ((verteces[originalVerteces[i]]->loc * (valance - 1)) / valance);
+	//}
+}
+
+void mesh::changeEdgePoints()
+{
+	for (int i = 0; i < newEdgePoints.size(); i++)
+	{
+		if (verteces[newEdgePoints[i]]->facePoints.size() > 1)
+		{
+			verteces[newEdgePoints[i]]->loc = verteces[newEdgePoints[i]]->averageFacePoints();
+		} 
 	}
 }
 
@@ -480,6 +450,51 @@ Vector3 vertex::averageEdgePoints()
 	}
 
 	return total / numOfFaces;
+}
+
+void mesh::reconnectFaces(int faceIndex)
+{
+	vector<int> innerFaceVerteces;
+
+	edges.push_back(new edge());
+	edges[edges.size() - 1]->id = edges.size();
+	edges[edges.size() - 1]->vert = verteces[faces[faceIndex]->newVerteces[0]];
+	innerFaceVerteces.push_back(edges.size() - 1);
+
+	edges.push_back(new edge());
+	edges[edges.size() - 1]->id = edges.size();
+	edges[edges.size() - 1]->vert = verteces[faces[faceIndex]->newVerteces[1]];
+	innerFaceVerteces.push_back(edges.size() - 1);
+
+	edges.push_back(new edge());
+	edges[edges.size() - 1]->id = edges.size();
+	edges[edges.size() - 1]->vert = verteces[faces[faceIndex]->newVerteces[2]];
+	innerFaceVerteces.push_back(edges.size() - 1);
+
+	edges[innerFaceVerteces[0]]->next = edges[innerFaceVerteces[1]];
+	edges[innerFaceVerteces[1]]->next = edges[innerFaceVerteces[2]];
+	edges[innerFaceVerteces[2]]->next = edges[innerFaceVerteces[0]];
+
+	vector<int> finalEdges = faces[faceIndex]->originalEdges;
+
+	// remove current face
+	faces.erase(faces.begin() + faceIndex);
+
+	faces.push_back(new face());
+	faces[faces.size() - 1]->id = faces.size();
+	faces[faces.size() - 1]->e = edges[finalEdges[0]];
+
+	faces.push_back(new face());
+	faces[faces.size() - 1]->id = faces.size();
+	faces[faces.size() - 1]->e = edges[finalEdges[1]];
+
+	faces.push_back(new face());
+	faces[faces.size() - 1]->id = faces.size();
+	faces[faces.size() - 1]->e = edges[finalEdges[2]];
+
+	faces.push_back(new face());
+	faces[faces.size() - 1]->id = faces.size();
+	faces[faces.size() - 1]->e = edges[innerFaceVerteces[0]];
 }
 
 } // namespace meshparse

@@ -81,6 +81,11 @@ class face {
         Vector3 normal;
         // a random edge on this face.
         edge* e;
+
+		std::vector<int> newEdges;
+		std::vector<int> originalEdges;
+		std::vector<int> newVerteces;
+		std::vector<int> originalVerteces;
 };
 
 class mesh {
@@ -90,12 +95,16 @@ class mesh {
         void calculate_normals(normal_mode mode);
         void scale_to_unit_cube();
 		void subdivide(int faceIndex);
+		void reconnectFaces(int faceIndex);
+		void changeEdgePoints();
 
         bounds get_bounds() const;
 
         std::vector<vertex*> verteces;
         std::vector<edge*> edges;
         std::vector<face*> faces;
+
+		std::vector<int> newEdgePoints;
 };
 
 class vector_comparitor {

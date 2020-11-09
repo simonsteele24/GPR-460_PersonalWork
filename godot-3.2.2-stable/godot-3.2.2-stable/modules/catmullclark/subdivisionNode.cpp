@@ -44,8 +44,14 @@ void SubdivisionNode::_update() {
 		for (int j = 0; j < numSubdivisions; j++)
 		{
 			int length = newMesh->faces.size();
-			for (int i = 0; i < length; i++) {
-				newMesh->subdivide(0);
+			for (int i = 0; i < length; i++)
+			{
+				newMesh->subdivide(i);
+			}
+			meshparse::generateVertexData(*newMesh);
+			for (int i = 0; i < length; i++)
+			{
+				newMesh->reconnectFaces(0);
 			}
 		}
 
@@ -120,4 +126,9 @@ void SubdivisionNode::_notification(int p_what) {
 			_draw();
 		} break;
 	}
+}
+
+void changeEdgePoints()
+{
+
 }
